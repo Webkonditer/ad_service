@@ -5,23 +5,30 @@ import lombok.Data;
 import ru.skypro.homework.model.Images;
 
 @Data
-public class AdsAllResultsDto {
+public class AdsByUserIdDto {
 
     /**
      * Поле - картинка из объявления (изображение товара/услуги)
      */
     private Images images;
 
-    /**
-     * Поле - id пользователя/автора объявления
-     */
-    @JsonProperty("author")
-    private Integer id;
+    @JsonProperty("authorLastName")
+    private String lastName;
+
+    @JsonProperty("authorFirstName")
+    private String firstName;
+
+    private String phone;
 
     /**
      * Поле - цена товара/услуги из объявления
      */
     private Integer price;
+
+    /**
+     * Поле - описание объявления
+     */
+    private String description;
 
     /**
      * Поле - primary key - идентификатор объявления
@@ -32,4 +39,6 @@ public class AdsAllResultsDto {
      * Поле - заголовок объявления
      */
     private String title;
+    private String email;
+
 }

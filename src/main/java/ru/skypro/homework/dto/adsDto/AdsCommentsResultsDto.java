@@ -1,5 +1,6 @@
 package ru.skypro.homework.dto.adsDto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 import java.time.Instant;
@@ -15,6 +16,7 @@ public class AdsCommentsResultsDto {
     /**
      * Поле - id пользователя/автора объявления
      */
+    @JsonProperty("author")
     private Integer id;
 
     /**
