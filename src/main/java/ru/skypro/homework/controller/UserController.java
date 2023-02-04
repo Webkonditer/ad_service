@@ -6,7 +6,8 @@ import ru.skypro.homework.dto.PasswordDto;
 import ru.skypro.homework.dto.UserDto;
 
 @RestController
-@RequestMapping("user")
+@CrossOrigin(value = "http://localhost:3000")
+@RequestMapping("/user")
 public class UserController {
 
     @PostMapping("/set_password")
