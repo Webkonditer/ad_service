@@ -3,7 +3,7 @@ package ru.skypro.homework.dto;
 import lombok.*;
 
 /**
- * DTO объявления
+ * DTO для создания и изменения объявления
  * */
 @Data
 @Getter
