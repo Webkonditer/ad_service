@@ -1,5 +1,6 @@
 package ru.skypro.homework.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
 /**
@@ -17,10 +18,11 @@ public class CommentDto {
     /**
      * Поле - id автора комментария
      * */
-    private Integer author;
+    @JsonProperty("author")
+    private Integer id;
 
     /**
-     * Поле -
+     * Поле - время создания
      * */
     private String createdAt;
 

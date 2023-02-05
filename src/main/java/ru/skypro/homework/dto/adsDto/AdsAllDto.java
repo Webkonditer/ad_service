@@ -14,5 +14,5 @@ public class AdsAllDto {
     private Integer count;
 
     @JsonProperty("results")
-    private List<AdsAllResultsDto> allResults;
+    private List<AdsDto> allResults;
 }
