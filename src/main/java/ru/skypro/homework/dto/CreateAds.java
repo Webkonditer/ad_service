@@ -4,7 +4,7 @@ import com.sun.istack.NotNull;
 import lombok.*;
 
 /**
- * DTO результата создания и изменения объявления
+ * DTO для создания и изменения объявления
  * */
 @Data
 @Getter

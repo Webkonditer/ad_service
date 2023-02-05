@@ -3,7 +3,7 @@ package ru.skypro.homework.dto;
 import lombok.*;
 
 /**
- * DTO для создания и изменения объявления
+ * DTO результата создания и изменения объявления
  * */
 @Data
 @Getter
@@ -14,7 +14,7 @@ import lombok.*;
 @AllArgsConstructor
 public class AdsDto {
     /**
-     * Поле - автор объявления
+     * Поле - id автора объявления
      * */
     private Integer author;
 
