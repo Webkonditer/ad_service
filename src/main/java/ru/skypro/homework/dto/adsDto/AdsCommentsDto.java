@@ -1,6 +1,7 @@
 package ru.skypro.homework.dto.adsDto;
 
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 import java.util.List;
@@ -16,6 +17,7 @@ public class AdsCommentsDto {
     /**
      * Поле - массив размещенных объявлений
      */
+    @JsonProperty("results")
     private List<AdsCommentsResultsDto> allResults;
 
 }

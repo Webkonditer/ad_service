@@ -1,4 +1,4 @@
-package ru.skypro.homework.dto;
+package ru.skypro.homework.dto.adsDto;
 
 import com.sun.istack.NotNull;
 import lombok.*;
@@ -13,7 +13,7 @@ import lombok.*;
 @EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
-public class CreateAds {
+public class AdsCreateDto {
     /**
      * Поле - описание объявления
      * */

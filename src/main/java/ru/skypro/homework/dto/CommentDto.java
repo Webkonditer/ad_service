@@ -12,7 +12,7 @@ import lombok.*;
 @EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
-public class Comment {
+public class CommentDto {
 
     /**
      * Поле - id автора комментария

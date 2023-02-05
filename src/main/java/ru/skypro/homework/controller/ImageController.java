@@ -9,7 +9,8 @@ import org.springframework.web.bind.annotation.*;
 public class ImageController {
 
     @PatchMapping("/{id}")
-    public ResponseEntity<Byte[]> updateAdsImage(@PathVariable Integer id, @RequestBody Byte[] image) {
+    public ResponseEntity<Byte[]> updateAdsImage(@PathVariable Integer id,
+                                                 @RequestBody Byte[] image) {
         if (image!=null) {
             return ResponseEntity.ok(image);
         } else if (false) {

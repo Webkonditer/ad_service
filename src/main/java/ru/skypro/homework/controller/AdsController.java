@@ -2,10 +2,9 @@ package ru.skypro.homework.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.skypro.homework.dto.AdsDto;
-import ru.skypro.homework.dto.Comment;
-import ru.skypro.homework.dto.CreateAds;
-import ru.skypro.homework.dto.PasswordDto;
+import ru.skypro.homework.dto.adsDto.AdsDto;
+import ru.skypro.homework.dto.CommentDto;
+import ru.skypro.homework.dto.adsDto.AdsCreateDto;
 import ru.skypro.homework.dto.adsDto.*;
 
 @CrossOrigin(value = "http://localhost:3000")
@@ -35,9 +34,20 @@ public class AdsController {
                                               @RequestParam Object principal) {
         if (true) {
             return ResponseEntity.ok(new AdsAllDto());
+        } else if (false) {
+            return ResponseEntity.status(401).build();
+        } else if (false) {
+            return ResponseEntity.status(403).build();
+        } else if (false) {
+            return ResponseEntity.status(404).build();
+        }
+        return null;
+    }
+
+
     @PatchMapping("/{id}")
-    public ResponseEntity<AdsDto> updateAds(@PathVariable Integer id, @RequestBody CreateAds createAds) {
-        if (createAds!=null) {
+    public ResponseEntity<AdsDto> updateAds(@PathVariable Integer id, @RequestBody AdsCreateDto createAds) {
+        if (createAds != null) {
             return ResponseEntity.ok(new AdsDto());
         } else if (false) {
             return ResponseEntity.status(401).build();
@@ -58,20 +68,35 @@ public class AdsController {
             return ResponseEntity.status(401).build();
         } else if (false) {
             return ResponseEntity.status(403).build();
+        }
+        return null;
+    }
+
     @GetMapping("/{ad_pk}/comments/{id}")
-    public ResponseEntity<Comment> getComments(@PathVariable String adPk, @PathVariable Integer id) {
-        if (adPk!=null) {
-            return ResponseEntity.ok(new Comment());
-                } else if (false) {
-                    return ResponseEntity.status(404).build();
-                }
-                return null;
-            }
+    public ResponseEntity<CommentDto> getComments(@PathVariable String adPk, @PathVariable Integer id) {
+        if (adPk != null) {
+            return ResponseEntity.ok(new CommentDto());
+        } else if (false) {
+            return ResponseEntity.status(404).build();
+        }
+        return null;
+    }
 
     @DeleteMapping("/{ad_pk}/comments/{id}")
-    public ResponseEntity<Integer> deleteComments(@PathVariable String adPk, @PathVariable Integer id) {
-        if (adPk!=null) {
+    public ResponseEntity<Integer> deleteComments(@PathVariable String ad_pk, @PathVariable Integer id) {
+//        if (adPk != null) {
+        if (true) {
             return ResponseEntity.status(200).build();
+        } else if (false) {
+            return ResponseEntity.status(401).build();
+        } else if (false) {
+            return ResponseEntity.status(403).build();
+        } else if (false) {
+            return ResponseEntity.status(404).build();
+        }
+        return null;
+    }
+
 
     @GetMapping("/{id}")
     public ResponseEntity<AdsByUserIdDto> getAds(@PathVariable Integer id) {
@@ -88,10 +113,21 @@ public class AdsController {
     }
 
     @PatchMapping("/{ad_pk}/comments/{id}")
-    public ResponseEntity<Comment> updateComments(@PathVariable String adPk,
-                                                  @PathVariable Integer id, @RequestBody Comment comment) {
-        if (comment!=null) {
+    public ResponseEntity<CommentDto> updateComments(@PathVariable String adPk,
+                                                     @PathVariable Integer id,
+                                                     @RequestBody CommentDto comment) {
+        if (comment != null) {
             return ResponseEntity.ok(comment);
+        } else if (false) {
+            return ResponseEntity.status(401).build();
+        } else if (false) {
+            return ResponseEntity.status(403).build();
+        } else if (false) {
+            return ResponseEntity.status(404).build();
+        }
+        return null;
+    }
+
     @PostMapping()
     public ResponseEntity<AdsAddDto> addAds(@RequestBody AdsAddDto adsAddDto) {
         if (true) {
