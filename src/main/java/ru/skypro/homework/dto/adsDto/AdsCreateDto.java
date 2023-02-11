@@ -7,12 +7,7 @@ import lombok.*;
  * DTO для создания и изменения объявления
  * */
 @Data
-@Getter
-@Setter
-@ToString
-@EqualsAndHashCode
 @NoArgsConstructor
-@AllArgsConstructor
 public class AdsCreateDto {
     /**
      * Поле - описание объявления

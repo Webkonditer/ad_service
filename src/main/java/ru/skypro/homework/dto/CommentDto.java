@@ -7,12 +7,7 @@ import lombok.*;
  * DTO коментария
  * */
 @Data
-@Getter
-@Setter
-@ToString
-@EqualsAndHashCode
 @NoArgsConstructor
-@AllArgsConstructor
 public class CommentDto {
 
     /**

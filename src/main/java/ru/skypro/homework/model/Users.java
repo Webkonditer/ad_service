@@ -1,9 +1,11 @@
 package ru.skypro.homework.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.Collection;
 
 /**
  * Класс - сущность пользователя
@@ -42,5 +44,7 @@ public class Users {
 
     private String image;
 
-
+    @OneToMany(mappedBy = "user")
+    @JsonIgnore
+    private Collection<Ads> ads;
 }

@@ -14,12 +14,6 @@ public class Ads {
 
 
     /**
-     * Поле - счетчик объявлений
-     */
-    private Integer count;
-
-
-    /**
      * Поле - primary key - идентификатор объявления
      */
     @Id
@@ -28,16 +22,18 @@ public class Ads {
 
 
     /**
-     * Поле - id автора объявления
+     * Поле - связь объявление с сущностью User
      */
-    @Column(name = "author")
-    private Integer id;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private Users user;
 
 
     /**
-     * Поле - путь к картинке - визуализация объявления
+     * Поле - картинка - визуализация объявления
      */
-    private String image;
+    @OneToOne
+    private Images image;
 
     /**
      * Поле - описание объявления
@@ -65,9 +61,6 @@ public class Ads {
     private String text;
 
 
-//    @ManyToOne
-//    @JsonIgnore
-//    private Comments comments;
 
 
 }

@@ -6,12 +6,7 @@ import lombok.*;
  * DTO результата создания и изменения объявления
  * */
 @Data
-@Getter
-@Setter
-@ToString
-@EqualsAndHashCode
 @NoArgsConstructor
-@AllArgsConstructor
 public class AdsDto {
     /**
      * Поле - id автора объявления
@@ -19,9 +14,9 @@ public class AdsDto {
     private Integer author;
 
     /**
-     * Поле - фото объявления
+     * Поле - ссылка на фото объявления
      */
-    private Byte[] image;
+    private String image;
 
     /**
      * Поле - идентификатор объявления

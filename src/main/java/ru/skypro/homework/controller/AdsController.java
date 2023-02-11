@@ -3,6 +3,7 @@ package ru.skypro.homework.controller;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.dto.adsDto.AdsDto;
 import ru.skypro.homework.dto.CommentDto;
 import ru.skypro.homework.dto.adsDto.AdsCreateDto;
@@ -61,8 +62,8 @@ public class AdsController {
     }
 
 
-    @GetMapping("/{ad_pk}/comments")
-    public ResponseEntity<AdsCommentsDto> getAdsComments(@PathVariable Integer ad_pk) {
+    @GetMapping("/{adPk}/comments")
+    public ResponseEntity<AdsCommentsDto> getAdsComments(@PathVariable Integer adPk) {
         if (true) {
             return ResponseEntity.ok(new AdsCommentsDto());
         } else if (false) {
@@ -73,8 +74,8 @@ public class AdsController {
         return null;
     }
 
-    @GetMapping("/{ad_pk}/comments/{id}")
-    public ResponseEntity<CommentDto> getComments(@PathVariable String ad_pk, @PathVariable Integer id) {
+    @GetMapping("/{adPk}/comments/{id}")
+    public ResponseEntity<CommentDto> getComments(@PathVariable String adPk, @PathVariable Integer id) {
         if (true) {
                 return ResponseEntity.ok(new CommentDto());
             } else if (false) {
@@ -83,8 +84,8 @@ public class AdsController {
         return null;
     }
 
-    @DeleteMapping("/{ad_pk}/comments/{id}")
-    public ResponseEntity<Object> deleteComments(@PathVariable String ad_pk, @PathVariable Integer id) {
+    @DeleteMapping("/{adPk}/comments/{id}")
+    public ResponseEntity<Object> deleteComments(@PathVariable String adPk, @PathVariable Integer id) {
         if (true) {
             return ResponseEntity.status(200).build();
         } else if (false) {
@@ -112,8 +113,8 @@ public class AdsController {
         return null;
     }
 
-    @PatchMapping("/{ad_pk}/comments/{id}")
-    public ResponseEntity<CommentDto> updateComments(@PathVariable String ad_pk,
+    @PatchMapping("/{adPk}/comments/{id}")
+    public ResponseEntity<CommentDto> updateComments(@PathVariable String adPk,
                                                      @PathVariable Integer id,
                                                      @RequestBody CommentDto comment) {
         if (true) {
@@ -130,7 +131,7 @@ public class AdsController {
 
     @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE })
     public ResponseEntity<AdsDto> addAds(@RequestPart("properties") AdsCreateDto adsCreateDto,
-                                         @RequestPart Byte[] image) {
+                                         @RequestPart MultipartFile image) {
         if (true) {
             return ResponseEntity.ok(new AdsDto());
         } else if (false) {
@@ -143,8 +144,8 @@ public class AdsController {
         return null;
     }
 
-    @PostMapping("/{ad_pk}/comment")
-    public ResponseEntity<CommentDto> addAdsComments(@PathVariable Integer ad_pk,
+    @PostMapping("/{adPk}/comment")
+    public ResponseEntity<CommentDto> addAdsComments(@PathVariable Integer adPk,
                                                                 @RequestBody CommentDto commentDto) {
         if (true) {
             return ResponseEntity.ok(commentDto);
