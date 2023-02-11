@@ -1,9 +1,11 @@
 package ru.skypro.homework.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
 import java.time.Instant;
+import java.util.Collection;
 
 /**
  * Класс - сущность объявления
@@ -18,6 +20,7 @@ public class Ads {
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="ad_id")
     private Integer pk;
 
 
@@ -25,6 +28,7 @@ public class Ads {
      * Поле - связь объявление с сущностью User
      */
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "user_id")
     private Users user;
 
@@ -33,6 +37,8 @@ public class Ads {
      * Поле - картинка - визуализация объявления
      */
     @OneToOne
+    @JsonIgnore
+    @JoinColumn(name = "image_id")
     private Images image;
 
     /**
@@ -53,12 +59,15 @@ public class Ads {
     /**
      * Поле - время создания объявления
      */
+    @JsonIgnore
     private Instant createdAt;
 
     /**
      * Поле - комментарий/отзыв пользователя
      */
-    private String text;
+    @OneToMany(mappedBy = "ad")
+    @JsonIgnore
+    private Collection<Comments> comments;
 
 
 

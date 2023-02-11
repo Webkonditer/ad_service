@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.Instant;
 import java.util.Collection;
 
 /**
@@ -19,6 +20,7 @@ public class Users {
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="user_id")
     private Integer id;
 
     /**
@@ -38,13 +40,23 @@ public class Users {
 
     private String phone;
 
-    private String regDate;
+    @JsonIgnore
+    private Instant regDate;
 
     private String city;
 
-    private String image;
+    /**
+     * Поле - аватарка
+     */
+    @OneToOne
+    @JoinColumn(name = "image_id")
+    private Images image;
 
     @OneToMany(mappedBy = "user")
     @JsonIgnore
     private Collection<Ads> ads;
+
+    @OneToMany(mappedBy = "user")
+    @JsonIgnore
+    private Collection<Comments> comments;
 }

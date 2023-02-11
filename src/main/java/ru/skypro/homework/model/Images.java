@@ -1,6 +1,7 @@
 package ru.skypro.homework.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -12,19 +13,23 @@ public class Images {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="image_id")
     private Integer id;
 
     /**
      * Поле - ссылка на картинку (аватар пользователя или визуализация объявления)
      */
+    @Column(name="image_link")
     private String image;
 
-//    @OneToOne
-//    @JsonIgnore
-//    private Users user;
-//
-//    @OneToOne
-//    @JsonIgnore
-//    private Ads ads;
+    @OneToOne
+    @JoinColumn(name = "ad_id")
+    private Ads ads;
+
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    private Users user;
+
+
 
 }
