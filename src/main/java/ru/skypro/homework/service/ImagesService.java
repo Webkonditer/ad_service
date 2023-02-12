@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.model.Images;
 import ru.skypro.homework.repository.ImagesRepository;
+import ru.skypro.homework.service.mapper.AdsMapper;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -14,7 +15,6 @@ import java.io.IOException;
 public class ImagesService {
 
     private final ImagesRepository imagesRepository;
-
     public ImagesService(ImagesRepository imagesRepository) {
         this.imagesRepository = imagesRepository;
     }
@@ -24,7 +24,6 @@ public class ImagesService {
         Images image = imagesRepository.findById(imageId).orElse(null);
         if (image == null) {
             log.warn("Getting image = null");
-            log.error("There is not image with id = {}",imageId);
         }
         log.debug("Getting image = {}",image);
         return image;
@@ -47,7 +46,7 @@ public class ImagesService {
     public byte[] update(Integer imageId, MultipartFile multipartFile) {
         log.info("Was invoked method for update image");
         try {
-            FileOutputStream out = new FileOutputStream(getAdsImageById(imageId).getImage());
+            FileOutputStream out = new FileOutputStream(getById(imageId).getImage());
             out.write(multipartFile.getBytes());
             out.close();
             return multipartFile.getBytes();
@@ -61,10 +60,8 @@ public class ImagesService {
         log.info("Was invoked method for check ads image by id");
         Images image = imagesRepository.findById(imageId).orElse(null);
         if (image == null || image.getAds() == null) {
-            log.warn("Getting image = null");
             log.error("There is not ads image with id = {}",imageId);
         }
-        log.debug("Getting image = {}",image);
         return image;
     }
 }
