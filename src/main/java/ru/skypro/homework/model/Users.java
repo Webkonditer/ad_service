@@ -29,6 +29,11 @@ public class Users {
     private String email;
 
     /**
+     * Поле - пароль пользователя
+     */
+    private String password;
+
+    /**
      * Поле - имя автора объявления/комментария
      */
     private String firstName;
