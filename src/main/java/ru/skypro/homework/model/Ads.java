@@ -63,7 +63,7 @@ public class Ads {
     private Instant createdAt;
 
     /**
-     * Поле - комментарий/отзыв пользователя
+     * Поле - список комментариев/отзывов пользователя
      */
     @OneToMany(mappedBy = "ad")
     @JsonIgnore

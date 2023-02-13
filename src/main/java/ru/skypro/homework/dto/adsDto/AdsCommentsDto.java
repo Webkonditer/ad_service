@@ -10,8 +10,9 @@ import java.util.List;
 @Data
 public class AdsCommentsDto {
 
+
     /**
-     * Поле - счетчик объявлений
+     * Поле - счетчик комментариев
      */
     private Integer count;
 

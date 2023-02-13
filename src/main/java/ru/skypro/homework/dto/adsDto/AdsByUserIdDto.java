@@ -8,9 +8,9 @@ import ru.skypro.homework.model.Images;
 public class AdsByUserIdDto {
 
     /**
-     * Поле - картинка из объявления (изображение товара/услуги)
+     * Поле - ссылка на фото объявления
      */
-    private Images images;
+    private String image;
 
     @JsonProperty("authorLastName")
     private String lastName;
@@ -39,6 +39,8 @@ public class AdsByUserIdDto {
      * Поле - заголовок объявления
      */
     private String title;
+
+
     private String email;
 
 }
