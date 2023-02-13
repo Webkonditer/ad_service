@@ -6,6 +6,7 @@ import lombok.*;
 import javax.persistence.*;
 import java.time.Instant;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Класс - сущность объявления
@@ -67,7 +68,7 @@ public class Ads {
      */
     @OneToMany(mappedBy = "ad")
     @JsonIgnore
-    private Collection<Comments> comments;
+    private List<Comments> comments;
 
 
 

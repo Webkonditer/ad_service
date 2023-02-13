@@ -2,10 +2,9 @@ package ru.skypro.homework.dto.adsDto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
-import ru.skypro.homework.model.Images;
 
 @Data
-public class AdsByUserIdDto {
+public class AdsByIdDto {
 
     /**
      * Поле - ссылка на фото объявления

@@ -11,10 +11,10 @@ import ru.skypro.homework.model.Users;
 @Mapper(componentModel = "spring", injectionStrategy = InjectionStrategy.CONSTRUCTOR)
 public interface CommentsMapper {
 
-//    @Mapping(source = "users.id", target = "id")
+
 //    @Mapping(source = "ads.pk", target = "pk")
-//    CommentDto toDto(Comments comments, Users users, Ads ads);
-//
+    CommentDto toCommentDto(Comments comments, Users users);
+
 //    Comments toModel (CommentDto dto);
 
 

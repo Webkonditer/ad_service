@@ -19,7 +19,7 @@ public class AdsService {
     public AdsDto getById(Integer adsId) {
         log.info("Was invoked method for get adsDto by id");
         Ads ad = adsRepository.findById(adsId).get();
-        return adsMapper.toDto(ad,ad.getImage(),ad.getUser());
+        return adsMapper.toAdsDto(ad,ad.getImage(),ad.getUser());
 
     }
 

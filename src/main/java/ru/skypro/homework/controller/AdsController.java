@@ -8,11 +8,17 @@ import ru.skypro.homework.dto.adsDto.AdsDto;
 import ru.skypro.homework.dto.CommentDto;
 import ru.skypro.homework.dto.adsDto.AdsCreateDto;
 import ru.skypro.homework.dto.adsDto.*;
+import ru.skypro.homework.service.AdsService;
 
 @CrossOrigin(value = "http://localhost:3000")
 @RestController
 @RequestMapping("/ads")
 public class AdsController {
+    private final AdsService adsService;
+    public AdsController(AdsService adsService) {
+        this.adsService = adsService;
+    }
+
 
     @GetMapping()
     public ResponseEntity<AdsAllDto> getAllAds() {
@@ -65,7 +71,7 @@ public class AdsController {
     @GetMapping("/{adPk}/comments")
     public ResponseEntity<AdsCommentsDto> getAdsComments(@PathVariable Integer adPk) {
         if (true) {
-            return ResponseEntity.ok(new AdsCommentsDto());
+            return ResponseEntity.ok(null/*new AdsCommentsDto()*/);
         } else if (false) {
             return ResponseEntity.status(401).build();
         } else if (false) {
@@ -100,15 +106,15 @@ public class AdsController {
 
 
     @GetMapping("/{id}")
-    public ResponseEntity<AdsByUserIdDto> getAds(@PathVariable Integer id) {
+    public ResponseEntity<AdsByIdDto> getAds(@PathVariable Integer id) {
         if (true) {
-            return ResponseEntity.ok(new AdsByUserIdDto());
+            return ResponseEntity.ok(new AdsByIdDto());
         } else if (false) {
-            return ResponseEntity.status(401).build();
+            return ResponseEntity.status(401).build(); //"Unauthorized"
+        } else if (id<0 || id==null) {
+            return ResponseEntity.status(403).build(); //"Forbidden"
         } else if (false) {
-            return ResponseEntity.status(403).build();
-        } else if (false) {
-            return ResponseEntity.status(404).build();
+            return ResponseEntity.status(404).build(); //"Not Found"
         }
         return null;
     }

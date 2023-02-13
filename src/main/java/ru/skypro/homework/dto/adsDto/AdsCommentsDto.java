@@ -2,12 +2,14 @@ package ru.skypro.homework.dto.adsDto;
 
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Builder;
 import lombok.Data;
 import ru.skypro.homework.dto.CommentDto;
 
 import java.util.List;
 
 @Data
+@Builder
 public class AdsCommentsDto {
 
 
