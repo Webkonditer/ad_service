@@ -36,8 +36,10 @@ public class AdsService {
     }
 
     public AdsDto updateAds(Integer id, AdsCreateDto adsCreateDto) {
+        if (!adsRepository.existsById(id)) {
+            return null;
+        }
         Ads ad = adsRepository.findById(id).get();
-        ad.setPk(id);
         ad.setDescription(adsCreateDto.getDescription());
         ad.setPrice(adsCreateDto.getPrice());
         ad.setTitle(adsCreateDto.getTitle());
