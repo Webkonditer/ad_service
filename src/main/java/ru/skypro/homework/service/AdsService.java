@@ -3,6 +3,8 @@ package ru.skypro.homework.service;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.skypro.homework.dto.adsDto.AdsAllDto;
+import ru.skypro.homework.dto.adsDto.AdsCommentsDto;
+import ru.skypro.homework.dto.adsDto.AdsCreateDto;
 import ru.skypro.homework.dto.adsDto.AdsDto;
 import ru.skypro.homework.model.Ads;
 import ru.skypro.homework.repository.AdsRepository;
@@ -25,5 +27,21 @@ public class AdsService {
 
     public AdsAllDto getAllAds() {
         return adsMapper.toAdsAllDto(adsRepository);
+    }
+
+    public AdsCommentsDto getAdsComments(Integer adsId) {
+        log.info("Was invoked method for get adsComments by adsId");
+        Ads ad = adsRepository.findById(adsId).get();
+        return adsMapper.toAdsCommentsDto(ad);
+    }
+
+    public AdsDto updateAds(Integer id, AdsCreateDto adsCreateDto) {
+        Ads ad = adsRepository.findById(id).get();
+        ad.setPk(id);
+        ad.setDescription(adsCreateDto.getDescription());
+        ad.setPrice(adsCreateDto.getPrice());
+        ad.setTitle(adsCreateDto.getTitle());
+        adsRepository.save(ad);
+        return adsMapper.toAdsDto(ad,ad.getImage(),ad.getUser());
     }
 }

@@ -3,6 +3,7 @@ package ru.skypro.homework.controller;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.dto.adsDto.AdsDto;
 import ru.skypro.homework.dto.CommentDto;
 import ru.skypro.homework.dto.adsDto.*;
@@ -22,17 +23,15 @@ public class AdsController {
     public ResponseEntity<AdsAllDto> getAllAds() {
         if (true) {
             return ResponseEntity.ok(adsService.getAllAds());
-        if (false) {
+        } else if (false) {
             return ResponseEntity.status(401).build();
         } else if (false) {
             return ResponseEntity.status(403).build();
-        } else
-
-        if (adsService.getAllAds()==null) {
+        } else if (false) {
             return ResponseEntity.status(404).build();
-        } else if()
+        }
+            return null;
     }
-
 
     @GetMapping("/me")
     public ResponseEntity<AdsAllDto> getAdsMe(@RequestParam(required = false) Boolean authenticated,
@@ -41,7 +40,7 @@ public class AdsController {
                                  @RequestParam(required = false) Object details,
                                  @RequestParam(required = false) Object principal) {
         if (true) {
-            return ResponseEntity.ok(null);
+            return ResponseEntity.ok(adsService.getAllAds());
         } else if (false) {
             return ResponseEntity.status(401).build();
         } else if (false) {
@@ -56,7 +55,7 @@ public class AdsController {
     @PatchMapping("/{id}")
     public ResponseEntity<AdsDto> updateAds(@PathVariable Integer id, @RequestBody AdsCreateDto adsCreateDto) {
         if (true) {
-            return ResponseEntity.ok(new AdsDto());
+            return ResponseEntity.ok(adsService.updateAds(id,adsCreateDto));
         } else if (false) {
             return ResponseEntity.status(401).build();
         } else if (false) {
@@ -71,7 +70,7 @@ public class AdsController {
     @GetMapping("/{adPk}/comments")
     public ResponseEntity<AdsCommentsDto> getAdsComments(@PathVariable Integer adPk) {
         if (true) {
-            return ResponseEntity.ok(null/*new AdsCommentsDto()*/);
+            return ResponseEntity.ok(adsService.getAdsComments(adPk));
         } else if (false) {
             return ResponseEntity.status(401).build();
         } else if (false) {
