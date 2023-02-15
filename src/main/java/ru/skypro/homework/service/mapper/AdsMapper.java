@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring", injectionStrategy = InjectionStrategy.CONSTRUCTOR)
 public interface AdsMapper {
-    CommentDto toCommentDto(Comments comments, Ads ads, Users users);
+    CommentDto toCommentDto(Comments comments, Users users);
 
     @Mapping(source = "images.image", target = "image")
     @Mapping(source = "users.id", target = "author")

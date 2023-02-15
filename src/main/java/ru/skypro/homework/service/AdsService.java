@@ -1,7 +1,6 @@
 package ru.skypro.homework.service;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.dto.CommentDto;
@@ -17,6 +16,7 @@ import ru.skypro.homework.repository.UserRepository;
 import ru.skypro.homework.service.mapper.AdsMapper;
 
 import java.time.Instant;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -69,11 +69,10 @@ public class AdsService {
 
     public CommentDto getComment(Integer adPk, Integer id) {
         log.info("Was invoked method for get Comments by adId and authorId");
-        Ads ad = adsRepository.findById(adPk).get();
         Users user = userRepository.findById(id).get();
         Comments comment = commentsRepository.findByAd_PkAndUser(adPk, id);
 
-        return adsMapper.toCommentDto(comment, ad, user);
+        return adsMapper.toCommentDto(comment, user);
     }
 
 
@@ -99,10 +98,9 @@ public class AdsService {
         comment.setText(commentDto.getText());
         comment.setCreatedAt(Instant.parse(commentDto.getCreatedAt()));
         commentsRepository.save(comment);
-        return adsMapper.toCommentDto(comment, comment.getAd(), comment.getUser());
+        return adsMapper.toCommentDto(comment, comment.getUser());
     }
 
-//    не передаем user id
     public AdsCreateDto addAds(AdsCreateDto adsCreateDto, MultipartFile image) {
         log.info("Was invoked method for create ad");
 
@@ -117,5 +115,22 @@ public class AdsService {
         ad.setUser(user.get());
         adsRepository.save(ad);
         return adsMapper.toAdsCreateDto (ad, user.get());
+    }
+
+    public CommentDto addAdsComments(Integer adPk, CommentDto commentDto) {
+        log.info("Was invoked method for add comment for ad");
+
+        Optional<Ads> ad = adsRepository.findById(adPk);
+        Comments comment = new Comments();
+        comment.setUser(userRepository.findById(commentDto.getId()).get());
+        comment.setCreatedAt(Instant.now());
+        comment.setText(commentDto.getText());
+        comment.setAd(adsRepository.findById(commentDto.getPk()).get());
+        List<Comments> commentsList =  ad.get().getComments();
+        commentsList.add(comment);
+
+        return adsMapper.toCommentDto(comment, comment.getUser());
+
+
     }
 }

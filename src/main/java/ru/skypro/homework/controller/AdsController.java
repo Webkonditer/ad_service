@@ -1,5 +1,6 @@
 package ru.skypro.homework.controller;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -9,7 +10,6 @@ import ru.skypro.homework.dto.CommentDto;
 import ru.skypro.homework.dto.adsDto.*;
 import ru.skypro.homework.service.AdsService;
 
-import java.util.Collection;
 
 @CrossOrigin(value = "http://localhost:3000")
 @RestController
@@ -157,7 +157,7 @@ public class AdsController {
     public ResponseEntity<CommentDto> addAdsComments(@PathVariable Integer adPk,
                                                      @RequestBody CommentDto commentDto) {
         if (true) {
-            return ResponseEntity.ok(commentDto);
+            return ResponseEntity.status(HttpStatus.CREATED).body(adsService.addAdsComments(adPk, commentDto));
         } else if (false) {
             return ResponseEntity.status(401).build();
         } else if (false) {
