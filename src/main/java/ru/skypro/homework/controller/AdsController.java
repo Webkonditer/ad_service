@@ -1,5 +1,6 @@
 package ru.skypro.homework.controller;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -8,6 +9,7 @@ import ru.skypro.homework.dto.adsDto.AdsDto;
 import ru.skypro.homework.dto.CommentDto;
 import ru.skypro.homework.dto.adsDto.*;
 import ru.skypro.homework.service.AdsService;
+
 
 @CrossOrigin(value = "http://localhost:3000")
 @RestController
@@ -30,15 +32,15 @@ public class AdsController {
         } else if (false) {
             return ResponseEntity.status(404).build();
         }
-            return null;
+        return null;
     }
 
     @GetMapping("/me")
     public ResponseEntity<AdsAllDto> getAdsMe(@RequestParam(required = false) Boolean authenticated,
-                                 @RequestParam(required = false, name = "authorities[0].authority") String authorities,
-                                 @RequestParam(required = false) Object credentials,
-                                 @RequestParam(required = false) Object details,
-                                 @RequestParam(required = false) Object principal) {
+                                              @RequestParam(required = false, name = "authorities[0].authority") String authorities,
+                                              @RequestParam(required = false) Object credentials,
+                                              @RequestParam(required = false) Object details,
+                                              @RequestParam(required = false) Object principal) {
         if (true) {
             return ResponseEntity.ok(adsService.getAllAds());
         } else if (false) {
@@ -55,7 +57,7 @@ public class AdsController {
     @PatchMapping("/{id}")
     public ResponseEntity<AdsDto> updateAds(@PathVariable Integer id, @RequestBody AdsCreateDto adsCreateDto) {
         if (true) {
-            return ResponseEntity.ok(adsService.updateAds(id,adsCreateDto));
+            return ResponseEntity.ok(adsService.updateAds(id, adsCreateDto));
         } else if (false) {
             return ResponseEntity.status(401).build();
         } else if (false) {
@@ -80,19 +82,20 @@ public class AdsController {
     }
 
     @GetMapping("/{adPk}/comments/{id}")
-    public ResponseEntity<CommentDto> getComments(@PathVariable String adPk, @PathVariable Integer id) {
+    public ResponseEntity<CommentDto> getComment(@PathVariable Integer adPk, @PathVariable Integer id) {
         if (true) {
-                return ResponseEntity.ok(new CommentDto());
-            } else if (false) {
-                return ResponseEntity.status(404).build();
-            }
+            return ResponseEntity.ok(adsService.getComment(adPk, id));
+        } else if (false) {
+            return ResponseEntity.status(404).build();
+        }
         return null;
     }
 
     @DeleteMapping("/{adPk}/comments/{id}")
-    public ResponseEntity<Object> deleteComments(@PathVariable String adPk, @PathVariable Integer id) {
+    public ResponseEntity<Object> deleteComments(@PathVariable Integer adPk, @PathVariable Integer id) {
         if (true) {
-            return ResponseEntity.status(200).build();
+            adsService.deleteComment(adPk, id);
+            return ResponseEntity.ok().build();
         } else if (false) {
             return ResponseEntity.status(401).build();
         } else if (false) {
@@ -107,10 +110,10 @@ public class AdsController {
     @GetMapping("/{id}")
     public ResponseEntity<AdsByIdDto> getAds(@PathVariable Integer id) {
         if (true) {
-            return ResponseEntity.ok(new AdsByIdDto());
+            return ResponseEntity.ok(adsService.getAds(id));
         } else if (false) {
             return ResponseEntity.status(401).build(); //"Unauthorized"
-        } else if (id<0 || id==null) {
+        } else if (id < 0 || id == null) {
             return ResponseEntity.status(403).build(); //"Forbidden"
         } else if (false) {
             return ResponseEntity.status(404).build(); //"Not Found"
@@ -119,11 +122,11 @@ public class AdsController {
     }
 
     @PatchMapping("/{adPk}/comments/{id}")
-    public ResponseEntity<CommentDto> updateComments(@PathVariable String adPk,
+    public ResponseEntity<CommentDto> updateComments(@PathVariable Integer adPk,
                                                      @PathVariable Integer id,
                                                      @RequestBody CommentDto comment) {
         if (true) {
-            return ResponseEntity.ok(comment);
+            return ResponseEntity.ok(adsService.updateComment(adPk, id, comment));
         } else if (false) {
             return ResponseEntity.status(401).build();
         } else if (false) {
@@ -134,11 +137,12 @@ public class AdsController {
         return null;
     }
 
-    @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE })
+    @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<AdsDto> addAds(@RequestPart("properties") AdsCreateDto adsCreateDto,
                                          @RequestPart MultipartFile image) {
         if (true) {
-            return ResponseEntity.ok(new AdsDto());
+            adsService.addAds(adsCreateDto, image);
+            return ResponseEntity.ok().build();
         } else if (false) {
             return ResponseEntity.status(401).build();
         } else if (false) {
@@ -151,9 +155,9 @@ public class AdsController {
 
     @PostMapping("/{adPk}/comment")
     public ResponseEntity<CommentDto> addAdsComments(@PathVariable Integer adPk,
-                                                                @RequestBody CommentDto commentDto) {
+                                                     @RequestBody CommentDto commentDto) {
         if (true) {
-            return ResponseEntity.ok(commentDto);
+            return ResponseEntity.status(HttpStatus.CREATED).body(adsService.addAdsComments(adPk, commentDto));
         } else if (false) {
             return ResponseEntity.status(401).build();
         } else if (false) {
