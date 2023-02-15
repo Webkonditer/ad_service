@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.dto.adsDto.AdsDto;
 import ru.skypro.homework.dto.CommentDto;
-import ru.skypro.homework.dto.adsDto.AdsCreateDto;
 import ru.skypro.homework.dto.adsDto.*;
 import ru.skypro.homework.service.AdsService;
 
@@ -15,15 +14,15 @@ import ru.skypro.homework.service.AdsService;
 @RequestMapping("/ads")
 public class AdsController {
     private final AdsService adsService;
+
     public AdsController(AdsService adsService) {
         this.adsService = adsService;
     }
 
-
     @GetMapping()
     public ResponseEntity<AdsAllDto> getAllAds() {
         if (true) {
-            return ResponseEntity.ok(new AdsAllDto());
+            return ResponseEntity.ok(adsService.getAllAds());
         } else if (false) {
             return ResponseEntity.status(401).build();
         } else if (false) {
@@ -31,7 +30,7 @@ public class AdsController {
         } else if (false) {
             return ResponseEntity.status(404).build();
         }
-        return null;
+            return null;
     }
 
     @GetMapping("/me")
@@ -41,7 +40,7 @@ public class AdsController {
                                  @RequestParam(required = false) Object details,
                                  @RequestParam(required = false) Object principal) {
         if (true) {
-            return ResponseEntity.ok(new AdsAllDto());
+            return ResponseEntity.ok(adsService.getAllAds());
         } else if (false) {
             return ResponseEntity.status(401).build();
         } else if (false) {
@@ -56,7 +55,7 @@ public class AdsController {
     @PatchMapping("/{id}")
     public ResponseEntity<AdsDto> updateAds(@PathVariable Integer id, @RequestBody AdsCreateDto adsCreateDto) {
         if (true) {
-            return ResponseEntity.ok(new AdsDto());
+            return ResponseEntity.ok(adsService.updateAds(id,adsCreateDto));
         } else if (false) {
             return ResponseEntity.status(401).build();
         } else if (false) {
@@ -71,7 +70,7 @@ public class AdsController {
     @GetMapping("/{adPk}/comments")
     public ResponseEntity<AdsCommentsDto> getAdsComments(@PathVariable Integer adPk) {
         if (true) {
-            return ResponseEntity.ok(null/*new AdsCommentsDto()*/);
+            return ResponseEntity.ok(adsService.getAdsComments(adPk));
         } else if (false) {
             return ResponseEntity.status(401).build();
         } else if (false) {
@@ -164,5 +163,6 @@ public class AdsController {
         }
         return null;
     }
+
 
 }
