@@ -40,3 +40,6 @@ CREATE TABLE images
     ad_id           INT DEFAULT null,
     user_id         INT DEFAULT null
 );
+
+-- changeset alexander:1
+ALTER TABLE users ADD COLUMN password VARCHAR;
