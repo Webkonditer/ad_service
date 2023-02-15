@@ -15,10 +15,15 @@ import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring", injectionStrategy = InjectionStrategy.CONSTRUCTOR)
 public interface AdsMapper {
-    CommentDto toCommentDto(Comments comments, Users users);
+    CommentDto toCommentDto(Comments comments, Ads ads, Users users);
+
     @Mapping(source = "images.image", target = "image")
     @Mapping(source = "users.id", target = "author")
     AdsDto toAdsDto(Ads ads, Images images, Users users);
+
+    @Mapping(source = "users.id", target = "author")
+    AdsCreateDto toAdsCreateDto(Ads ads, Users users);
+
 
     Ads toAds(AdsCreateDto dto);
 
@@ -30,17 +35,20 @@ public interface AdsMapper {
                 .count(ads.getComments().size())
                 .allResults(ads.getComments()
                         .stream()
-                        .map(c-> toCommentDto(c,ads.getUser()))
+                        .map(c -> toCommentDto(c, ads.getUser()))
                         .collect(Collectors.toList()))
                 .build();
     }
+
     default AdsAllDto toAdsAllDto(AdsRepository adsRepository) {
         return AdsAllDto.builder()
                 .count(adsRepository.findAll().size())
                 .allResults(adsRepository.findAll()
                         .stream()
-                        .map(a-> toAdsDto(a,a.getImage(),a.getUser()))
+                        .map(a -> toAdsDto(a, a.getImage(), a.getUser()))
                         .collect(Collectors.toList()))
                 .build();
     }
+
+
 }

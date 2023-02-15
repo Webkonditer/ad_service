@@ -26,4 +26,9 @@ public class AdsCreateDto {
      * */
     @NotNull
     private String title;
+
+    /**
+     * Поле - id автора объявления
+     * */
+    private Integer author;
 }
