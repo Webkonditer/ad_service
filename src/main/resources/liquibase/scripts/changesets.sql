@@ -43,3 +43,7 @@ CREATE TABLE images
 
 -- changeset alexander:1
 ALTER TABLE users ADD COLUMN password VARCHAR;
+
+-- changeset denis:2
+ALTER TABLE images DROP COLUMN ad_id;
+ALTER TABLE images DROP COLUMN user_id;

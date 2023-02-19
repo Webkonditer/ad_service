@@ -2,7 +2,9 @@ package ru.skypro.homework.model;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import lombok.Data;
+import lombok.ToString;
 
 import javax.persistence.*;
 
@@ -22,13 +24,14 @@ public class Images {
     @Column(name="image_link")
     private String image;
 
-    @OneToOne
-    @JoinColumn(name = "ad_id")
+    @OneToOne(mappedBy = "image")
+    @ToString.Exclude
     private Ads ads;
 
-    @OneToOne
-    @JoinColumn(name = "user_id")
-    private Users user;
+
+//    @OneToOne
+//    @JoinColumn(name = "user_id")
+//    private Users user;
 
 
 

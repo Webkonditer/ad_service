@@ -34,7 +34,7 @@ public class UserService {
      * @return user сущность пользователя
      */
     public Users getUserByEmail() {
-        String email = "user1@gmail.com";//Заглушка
+        String email = "USER@GMAIL.COM";//Заглушка
         Users user = userRepository.findByEmail(email);
         if(user == null){
             log.info("User not found");

@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.dto.CommentDto;
+import ru.skypro.homework.dto.UserDto;
 import ru.skypro.homework.dto.adsDto.*;
 import ru.skypro.homework.model.Ads;
 import ru.skypro.homework.model.Comments;
@@ -15,34 +16,38 @@ import ru.skypro.homework.repository.ImagesRepository;
 import ru.skypro.homework.repository.UserRepository;
 import ru.skypro.homework.service.mapper.AdsMapper;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 @Slf4j
 public class AdsService {
-    private final ImagesRepository imagesRepository;
-    private final UserRepository userRepository;
+    private final UserService userService;
     private final CommentsRepository commentsRepository;
     private final AdsRepository adsRepository;
     private final AdsMapper adsMapper;
+    private final ImagesService imageService;
 
     public AdsService(AdsRepository adsRepository, AdsMapper adsMapper,
                       CommentsRepository commentsRepository,
-                      UserRepository userRepository,
-                      ImagesRepository imagesRepository) {
+                      UserService userService,
+                      ImagesService imageService) {
         this.adsRepository = adsRepository;
         this.adsMapper = adsMapper;
         this.commentsRepository = commentsRepository;
-        this.userRepository = userRepository;
-        this.imagesRepository = imagesRepository;
+        this.userService = userService;
+        this.imageService = imageService;
     }
 
     public AdsDto getById(Integer adsId) {
         log.info("Was invoked method for get adsDto by id");
         Ads ad = adsRepository.findById(adsId).get();
-        return adsMapper.toAdsDto(ad, ad.getImage(), ad.getUser());
+        return adsMapper.toAdsDto(ad);
     }
 
     public AdsAllDto getAllAds() {
@@ -64,12 +69,12 @@ public class AdsService {
         ad.setPrice(adsCreateDto.getPrice());
         ad.setTitle(adsCreateDto.getTitle());
         adsRepository.save(ad);
-        return adsMapper.toAdsDto(ad, ad.getImage(), ad.getUser());
+        return adsMapper.toAdsDto(ad);
     }
 
     public CommentDto getComment(Integer adPk, Integer id) {
         log.info("Was invoked method for get Comments by adId and authorId");
-        Users user = userRepository.findById(id).get();
+        Users user = userService.getUserByEmail();
         Comments comment = commentsRepository.findByAd_PkAndUser(adPk, id);
 
         return adsMapper.toCommentDto(comment, user);
@@ -101,20 +106,36 @@ public class AdsService {
         return adsMapper.toCommentDto(comment, comment.getUser());
     }
 
-    public AdsCreateDto addAds(AdsCreateDto adsCreateDto, MultipartFile image) {
+    public AdsDto addAds(AdsCreateDto adsCreateDto, MultipartFile image) {
         log.info("Was invoked method for create ad");
 
         Ads ad = new Ads();
         ad.setDescription(adsCreateDto.getDescription());
         ad.setPrice(adsCreateDto.getPrice());
         ad.setTitle(adsCreateDto.getTitle());
-        ad.setImage((Images) image);
-        ad.setCreatedAt(Instant.now());
 
-        Optional<Users> user = userRepository.findById(adsCreateDto.getAuthor());
-        ad.setUser(user.get());
+        ad.setCreatedAt(Instant.now());
+        ad.setUser(userService.getUserByEmail());
+
+        log.warn("Начало сохранения картинки");
+        ad.setImage(imageService.create(image));
+
+        log.warn("Картинка сохранена");
         adsRepository.save(ad);
-        return adsMapper.toAdsCreateDto (ad, user.get());
+
+
+
+
+
+
+//        URL website = new URL("95.31.175.90/information.asp");
+//        ReadableByteChannel rbc = Channels.newChannel(website.openStream());
+//        FileOutputStream fos = new FileOutputStream("information.html");
+//        fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
+
+
+
+        return adsMapper.toAdsDto(ad);
     }
 
     public CommentDto addAdsComments(Integer adPk, CommentDto commentDto) {
@@ -122,7 +143,7 @@ public class AdsService {
 
         Optional<Ads> ad = adsRepository.findById(adPk);
         Comments comment = new Comments();
-        comment.setUser(userRepository.findById(commentDto.getId()).get());
+        comment.setUser(userService.getUserByEmail());
         comment.setCreatedAt(Instant.now());
         comment.setText(commentDto.getText());
         comment.setAd(adsRepository.findById(commentDto.getPk()).get());
@@ -130,7 +151,5 @@ public class AdsService {
         commentsList.add(comment);
 
         return adsMapper.toCommentDto(comment, comment.getUser());
-
-
     }
 }
