@@ -41,7 +41,11 @@ public class AdsService {
 
     public AdsDto getById(Integer adsId) {
         log.info("Was invoked method for get adsDto by id");
-        Ads ad = adsRepository.findById(adsId).get();
+        Ads ad = adsRepository.findById(adsId).orElse(null);
+        if(ad == null){
+            log.info("Ad not found");
+            return null;
+        }
         return adsMapper.toAdsDto(ad, ad.getImage(), ad.getUser());
     }
 
@@ -51,7 +55,11 @@ public class AdsService {
 
     public AdsCommentsDto getAdsComments(Integer adsId) {
         log.info("Was invoked method for get adsComments by adsId");
-        Ads ad = adsRepository.findById(adsId).get();
+        Ads ad = adsRepository.findById(adsId).orElse(null);
+        if(ad == null){
+            log.info("Ad not found");
+            return null;
+        }
         return adsMapper.toAdsCommentsDto(ad);
     }
 
@@ -59,7 +67,11 @@ public class AdsService {
         if (!adsRepository.existsById(id)) {
             return null;
         }
-        Ads ad = adsRepository.findById(id).get();
+        Ads ad = adsRepository.findById(id).orElse(null);
+        if(ad == null){
+            log.info("Ad not found");
+            return null;
+        }
         ad.setDescription(adsCreateDto.getDescription());
         ad.setPrice(adsCreateDto.getPrice());
         ad.setTitle(adsCreateDto.getTitle());
@@ -69,7 +81,11 @@ public class AdsService {
 
     public CommentDto getComment(Integer adPk, Integer id) {
         log.info("Was invoked method for get Comments by adId and authorId");
-        Users user = userRepository.findById(id).get();
+        Users user = userRepository.findById(id).orElse(null);
+        if(user == null){
+            log.info("User not found");
+            return null;
+        }
         Comments comment = commentsRepository.findByAd_PkAndUser(adPk, id);
 
         return adsMapper.toCommentDto(comment, user);
@@ -84,7 +100,11 @@ public class AdsService {
 
     public AdsByIdDto getAds(Integer id) {
         log.info("Was invoked method for get Ads by id");
-        Ads ad = adsRepository.findById(id).get();
+        Ads ad = adsRepository.findById(id).orElse(null);
+        if(ad == null){
+            log.info("Ad not found");
+            return null;
+        }
         return adsMapper.toDtoByUserId(ad, ad.getImage(), ad.getUser());
     }
 
@@ -103,6 +123,9 @@ public class AdsService {
 
     public AdsCreateDto addAds(AdsCreateDto adsCreateDto, MultipartFile image) {
         log.info("Was invoked method for create ad");
+
+//        Images image2 = new Images();
+
 
         Ads ad = new Ads();
         ad.setDescription(adsCreateDto.getDescription());
