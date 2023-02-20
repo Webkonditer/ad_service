@@ -54,8 +54,8 @@ public class Users {
      * Поле - аватарка
      */
     @OneToOne
-    @JoinColumn(name = "image_id")
-    private Images image;
+    @JoinColumn(name = "avatar_id")
+    private Avatars avatar;
 
     @OneToMany(mappedBy = "user")
     @JsonIgnore

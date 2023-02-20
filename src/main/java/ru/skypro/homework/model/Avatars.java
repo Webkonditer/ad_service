@@ -1,29 +1,28 @@
 package ru.skypro.homework.model;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
 
 @Data
 @Entity
-public class Images {
+public class Avatars {
 
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="image_id")
+    @Column(name="avatar_id")
     private Integer id;
 
     /**
      * Поле - ссылка на картинку (аватар пользователя или визуализация объявления)
      */
-    @Column(name="image_link")
-    private String image;
+    @Column(name="avatar_link")
+    private String avatar;
 
     @OneToOne
-    @JoinColumn(name = "ad_id")
-    private Ads ads;
+    @JoinColumn(name = "user_id")
+    private Users user;
 
 }
