@@ -115,6 +115,9 @@ public class UserService {
             avr.setUser(user);
         }
         avr.setAvatar(filePath.toString());
+        avr.setLinkForFront("/users/avatar/" + user.getId());
+        avr.setFileSize(image.getSize());
+        avr.setMediaType(image.getContentType());
         avatarsRepository.save(avr);
         user.setAvatar(avr);
         userRepository.save(user);
