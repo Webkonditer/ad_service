@@ -5,9 +5,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.dto.PasswordDto;
 import ru.skypro.homework.dto.UserDto;
-import ru.skypro.homework.model.Images;
+import ru.skypro.homework.model.Avatars;
 import ru.skypro.homework.model.Users;
 import ru.skypro.homework.repository.AdsRepository;
+import ru.skypro.homework.repository.AvatarsRepository;
 import ru.skypro.homework.repository.ImagesRepository;
 import ru.skypro.homework.repository.UserRepository;
 import ru.skypro.homework.service.mapper.AdsMapper;
@@ -23,10 +24,10 @@ import static java.nio.file.StandardOpenOption.CREATE_NEW;
 @Slf4j
 public class UserService {
     private final UserRepository userRepository;
-    private final ImagesRepository imagesRepository;
-    public UserService(AdsRepository adsRepository, UserRepository userRepository, AdsMapper adsMapper, ImagesRepository imagesRepository) {
+    private final AvatarsRepository avatarsRepository;
+    public UserService(AdsRepository adsRepository, UserRepository userRepository, AdsMapper adsMapper, ImagesRepository imagesRepository, AvatarsRepository avatarsRepository) {
         this.userRepository = userRepository;
-        this.imagesRepository = imagesRepository;
+        this.avatarsRepository = avatarsRepository;
     }
 
     /**
@@ -34,7 +35,7 @@ public class UserService {
      * @return user сущность пользователя
      */
     public Users getUserByEmail() {
-        String email = "user1@gmail.com";//Заглушка
+        String email = "user@gmail.com";//Заглушка
         Users user = userRepository.findByEmail(email);
         if(user == null){
             log.info("User not found");
@@ -97,7 +98,7 @@ public class UserService {
             log.info("User not found");
             return false;
         }
-        Path filePath = Path.of("/images", user.getId() + "_avatar." + getExtensions(image.getOriginalFilename()));
+        Path filePath = Path.of("/avatars", user.getId() + "_avatar." + getExtensions(image.getOriginalFilename()));
         Files.createDirectories(filePath.getParent());
         Files.deleteIfExists(filePath);
         try (
@@ -108,10 +109,17 @@ public class UserService {
         ) {
             bis.transferTo(bos);
         }
-        Images img = user.getImage();
-        img.setImage(filePath.toString());
-        imagesRepository.save(img);
+        Avatars avr = user.getAvatar();
+        if(avr == null) {
+            avr = new Avatars();
+            avr.setUser(user);
+        }
+        avr.setAvatar(filePath.toString());
+        avatarsRepository.save(avr);
+        user.setAvatar(avr);
+        userRepository.save(user);
         return true;
+
     }
 
     /**

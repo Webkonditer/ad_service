@@ -43,3 +43,18 @@ CREATE TABLE images
 
 -- changeset alexander:1
 ALTER TABLE users ADD COLUMN password VARCHAR;
+
+-- changeset alexander:2
+alter table images drop column user_id;
+
+-- changeset alexander:3
+CREATE TABLE avatars
+(
+    avatar_id       SERIAL primary key,
+    avatar_link     VARCHAR,
+    user_id         INT DEFAULT null
+);
+
+-- changeset alexander:4
+ALTER TABLE users DROP COLUMN image_id ;
+ALTER TABLE users ADD COLUMN avatar_id INT;
