@@ -14,7 +14,7 @@ public interface UserMapper {
 
     UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
 
-    @Mapping(source = "user.avatar.avatar", target = "image")
+    @Mapping(source = "user.avatar.linkForFront", target = "image")
     UserDto toDto(Users user);
 
 

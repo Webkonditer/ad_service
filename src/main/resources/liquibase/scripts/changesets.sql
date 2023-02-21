@@ -58,3 +58,14 @@ CREATE TABLE avatars
 -- changeset alexander:4
 ALTER TABLE users DROP COLUMN image_id ;
 ALTER TABLE users ADD COLUMN avatar_id INT;
+
+-- changeset alexander:5
+ALTER TABLE avatars ADD COLUMN link_for_front VARCHAR;
+
+-- changeset alexander:6
+ALTER TABLE avatars ADD COLUMN file_size INT;
+ALTER TABLE avatars ADD COLUMN media_type VARCHAR;
+
+-- changeset alexander:7
+ALTER TABLE avatars DROP COLUMN file_size;
+ALTER TABLE avatars ADD COLUMN file_size BIGINT;

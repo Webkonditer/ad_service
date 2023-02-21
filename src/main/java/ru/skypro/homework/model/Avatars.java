@@ -25,4 +25,15 @@ public class Avatars {
     @JoinColumn(name = "user_id")
     private Users user;
 
+    /**
+     * Поле - ссылка на контроллер аватарок для фронта
+     */
+    @Column(name="link_for_front")
+    private String linkForFront;
+
+    @Column(name="file_size")
+    private Long fileSize;
+
+    @Column(name="media_type")
+    private String mediaType;
 }
