@@ -88,7 +88,7 @@ public class UserService {
 
     /**
      * Метод обновляет иконку текущего пользователя
-     * @param image картинка из фронтв
+     * @param image картинка из фронта
      * @return true или false
      * @throws IOException
      */
@@ -105,7 +105,7 @@ public class UserService {
                 InputStream is = image.getInputStream();
                 OutputStream os = Files.newOutputStream(filePath, CREATE_NEW);
                 BufferedInputStream bis = new BufferedInputStream(is, 1024);
-                BufferedOutputStream bos = new BufferedOutputStream(os, 1024);
+                BufferedOutputStream bos = new BufferedOutputStream(os, 1024)
         ) {
             bis.transferTo(bos);
         }

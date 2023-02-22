@@ -1,7 +1,6 @@
 package ru.skypro.homework.model;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -25,5 +24,18 @@ public class Images {
     @OneToOne
     @JoinColumn(name = "ad_id")
     private Ads ads;
+
+
+    /**
+     * Поле - ссылка на контроллер картинок для фронта
+     */
+    @Column(name="link_for_front")
+    private String linkForFront;
+
+    @Column(name="file_size")
+    private Long fileSize;
+
+    @Column(name="media_type")
+    private String mediaType;
 
 }

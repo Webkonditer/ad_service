@@ -5,10 +5,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.model.Images;
 import ru.skypro.homework.repository.ImagesRepository;
-import ru.skypro.homework.service.mapper.AdsMapper;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.time.Instant;
+import java.util.Objects;
+
+import static java.nio.file.StandardOpenOption.CREATE_NEW;
 
 @Service
 @Slf4j
@@ -29,10 +33,10 @@ public class ImagesService {
         return image;
     }
 
-    public Images create(Images image) {
-        log.info("Was invoked method for create image");
-        return imagesRepository.save(image);
-    }
+//    public Images create(Images image) {
+//        log.info("Was invoked method for create image");
+//        return imagesRepository.save(image);
+//    }
 
     public void delete(Integer imageId) throws RuntimeException {
         log.info("Was invoked method for delete image by id");
@@ -64,4 +68,47 @@ public class ImagesService {
         }
         return image;
     }
+
+/** Метод для создания объекта image из поступившего multipartFile
+ * */
+    public Images createImage (MultipartFile multipartFile) throws IOException {
+        log.info("Was invoked method for create image from multipartFile");
+
+        if(multipartFile == null){
+            log.info("file not exist");
+            return null;
+        }
+
+        Path filePath = Path.of("/images", Instant.now().toString() +
+                "_image." + getExtensions(Objects.requireNonNull(multipartFile.getOriginalFilename())));
+        Files.createDirectories(filePath.getParent());
+        Files.deleteIfExists(filePath);
+        try (
+                InputStream is = multipartFile.getInputStream();
+                OutputStream os = Files.newOutputStream(filePath, CREATE_NEW);
+                BufferedInputStream bis = new BufferedInputStream(is, 1024);
+                BufferedOutputStream bos = new BufferedOutputStream(os, 1024)
+        ) {
+            bis.transferTo(bos);
+        }
+        Images img = new Images();
+        img.setImage(filePath.toString());
+
+//??
+        img.setLinkForFront("/ads/image/"); // дописать - что пишем, если создаем новое объявление?
+        img.setFileSize(multipartFile.getSize());
+        img.setMediaType(multipartFile.getContentType());
+        return imagesRepository.save(img);
+
+    }
+
+    /**
+     * Метод возвращает расширение файла
+     * @param fileName - имя входящего файла
+     * @return - возвращается расширение файла
+     */
+    private String getExtensions(String fileName) {
+        return fileName.substring(fileName.lastIndexOf(".") + 1);
+    }
 }
+
