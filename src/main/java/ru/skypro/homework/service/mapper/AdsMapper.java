@@ -22,51 +22,52 @@ import java.util.stream.Collectors;
 public interface AdsMapper {
     CommentDto toCommentDto(Comments comments, Users users);
 
-//    @Mapping(source = "images.image", target = "image")
-//    @Mapping(source = "users.id", target = "author")
+    @Mapping(source = "images.image", target = "image")
+    @Mapping(source = "users.id", target = "author")
 
-    default AdsDto toAdsDto(Ads ads) {
+     AdsDto toAdsDto(Ads ads, Users users,Images images);
+//     {
 
-
-        // list that holds strings of a file
-        List<String> listOfStrings
-                = new ArrayList<String>();
-        try {
-            // load data from file
-            BufferedReader bf = new BufferedReader(
-                    new FileReader(ads.getImage().getImage()));
-
-            // read entire line as string
-            String line = bf.readLine();
-
-            // checking for end of file
-            while (line != null) {
-                listOfStrings.add(line);
-                line = bf.readLine();
-            }
-
-            // closing bufferreader object
-            bf.close();
-        } catch (
-                IOException e) {
-            e.printStackTrace();
-            return null;
-        }
-        // storing the data in arraylist to array
-        String[] array
-                = listOfStrings.toArray(new String[0]);
-
-
-        AdsDto adsDto = new AdsDto();
-        adsDto.setImage(array);
-        adsDto.setAuthor(ads.getUser().getId());
-        adsDto.setPrice(ads.getPrice());
-        adsDto.setTitle(ads.getTitle());
-        adsDto.setPk(ads.getPk());
-
-        return adsDto;
-
-    }
+//        // read entire line as string
+//            String line = bf.readLine();
+//
+//
+//            // list that holds strings of a file
+//            List<String> listOfStrings
+//                    = new ArrayList<String>();
+//            try {
+//                // load data from file
+//                BufferedReader bf = new BufferedReader(
+//                        new FileReader(ads.getImage().getImage()));
+//
+//                // checking for end of file
+//            while (line != null) {
+//                listOfStrings.add(line);
+//                line = bf.readLine();
+//            }
+//
+//            // closing bufferreader object
+//            bf.close();
+//        } catch (
+//                IOException e) {
+//            e.printStackTrace();
+//            return null;
+//        }
+//        // storing the data in arraylist to array
+//        String[] array
+//                = listOfStrings.toArray(new String[0]);
+//
+//
+//        AdsDto adsDto = new AdsDto();
+//        adsDto.setImage(array);
+//        adsDto.setAuthor(ads.getUser().getId());
+//        adsDto.setPrice(ads.getPrice());
+//        adsDto.setTitle(ads.getTitle());
+//        adsDto.setPk(ads.getPk());
+//
+//        return adsDto;
+//
+//    }
 
 
 
@@ -94,7 +95,7 @@ public interface AdsMapper {
                 .count(adsRepository.findAll().size())
                 .allResults(adsRepository.findAll()
                         .stream()
-                        .map(a -> toAdsDto(a))
+                        .map(a -> toAdsDto(a,a.getUser(),a.getImage()))
                         .collect(Collectors.toList()))
                 .build();
     }

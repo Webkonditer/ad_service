@@ -47,7 +47,7 @@ public class AdsService {
     public AdsDto getById(Integer adsId) {
         log.info("Was invoked method for get adsDto by id");
         Ads ad = adsRepository.findById(adsId).get();
-        return adsMapper.toAdsDto(ad);
+        return adsMapper.toAdsDto(ad, ad.getUser(),ad.getImage());
     }
 
     public AdsAllDto getAllAds() {
@@ -69,7 +69,7 @@ public class AdsService {
         ad.setPrice(adsCreateDto.getPrice());
         ad.setTitle(adsCreateDto.getTitle());
         adsRepository.save(ad);
-        return adsMapper.toAdsDto(ad);
+        return adsMapper.toAdsDto(ad, ad.getUser(),ad.getImage());
     }
 
     public CommentDto getComment(Integer adPk, Integer id) {
@@ -135,7 +135,7 @@ public class AdsService {
 
 
 
-        return adsMapper.toAdsDto(ad);
+        return adsMapper.toAdsDto(ad,ad.getUser(),ad.getImage());
     }
 
     public CommentDto addAdsComments(Integer adPk, CommentDto commentDto) {

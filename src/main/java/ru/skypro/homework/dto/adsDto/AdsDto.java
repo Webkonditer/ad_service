@@ -16,7 +16,7 @@ public class AdsDto {
     /**
      * Поле - фото объявления
      */
-    private String[] image;
+    private String image;
 
     /**
      * Поле - идентификатор объявления
