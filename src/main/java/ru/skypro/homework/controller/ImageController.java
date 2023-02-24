@@ -16,10 +16,10 @@ public class ImageController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<byte[]> updateAdsImage(@PathVariable Integer id,
-                                                 @RequestBody MultipartFile image)  {
+    public ResponseEntity<String> updateAdsImage(@PathVariable Integer id,
+                                                 @RequestBody String image)  {
         if (imagesService.getAdsImageById(id)!=null) {
-            return ResponseEntity.ok(imagesService.update(id,image));
+            return ResponseEntity.ok(imagesService.update(id,image).getImage());
         }
             return ResponseEntity.status(404).build();
     }
