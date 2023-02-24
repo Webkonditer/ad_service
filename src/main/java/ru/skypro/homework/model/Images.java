@@ -1,8 +1,7 @@
 package ru.skypro.homework.model;
 
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+import lombok.ToString;
 
 import javax.persistence.*;
 
@@ -22,8 +21,7 @@ public class Images {
     @Column(name="image_link")
     private String image;
 
-    @OneToOne
-    @JoinColumn(name = "ad_id")
+    @OneToOne(mappedBy = "image")
+    @ToString.Exclude
     private Ads ads;
-
 }

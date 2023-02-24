@@ -69,3 +69,7 @@ ALTER TABLE avatars ADD COLUMN media_type VARCHAR;
 -- changeset alexander:7
 ALTER TABLE avatars DROP COLUMN file_size;
 ALTER TABLE avatars ADD COLUMN file_size BIGINT;
+
+
+-- changeset denis:2
+ALTER TABLE images DROP COLUMN user_id;

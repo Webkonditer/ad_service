@@ -35,7 +35,7 @@ public class UserService {
      * @return user сущность пользователя
      */
     public Users getUserByEmail() {
-        String email = "user@gmail.com";//Заглушка
+        String email = "USER@GMAIL.COM";//Заглушка
         Users user = userRepository.findByEmail(email);
         if(user == null){
             log.info("User not found");
@@ -122,7 +122,6 @@ public class UserService {
         user.setAvatar(avr);
         userRepository.save(user);
         return true;
-
     }
 
     /**

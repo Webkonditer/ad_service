@@ -11,6 +11,11 @@ import ru.skypro.homework.model.Images;
 import ru.skypro.homework.model.Users;
 import ru.skypro.homework.repository.AdsRepository;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring", injectionStrategy = InjectionStrategy.CONSTRUCTOR)
@@ -19,7 +24,52 @@ public interface AdsMapper {
 
     @Mapping(source = "images.image", target = "image")
     @Mapping(source = "users.id", target = "author")
-    AdsDto toAdsDto(Ads ads, Images images, Users users);
+
+     AdsDto toAdsDto(Ads ads, Users users,Images images);
+//     {
+
+//        // read entire line as string
+//            String line = bf.readLine();
+//
+//
+//            // list that holds strings of a file
+//            List<String> listOfStrings
+//                    = new ArrayList<String>();
+//            try {
+//                // load data from file
+//                BufferedReader bf = new BufferedReader(
+//                        new FileReader(ads.getImage().getImage()));
+//
+//                // checking for end of file
+//            while (line != null) {
+//                listOfStrings.add(line);
+//                line = bf.readLine();
+//            }
+//
+//            // closing bufferreader object
+//            bf.close();
+//        } catch (
+//                IOException e) {
+//            e.printStackTrace();
+//            return null;
+//        }
+//        // storing the data in arraylist to array
+//        String[] array
+//                = listOfStrings.toArray(new String[0]);
+//
+//
+//        AdsDto adsDto = new AdsDto();
+//        adsDto.setImage(array);
+//        adsDto.setAuthor(ads.getUser().getId());
+//        adsDto.setPrice(ads.getPrice());
+//        adsDto.setTitle(ads.getTitle());
+//        adsDto.setPk(ads.getPk());
+//
+//        return adsDto;
+//
+//    }
+
+
 
     @Mapping(source = "users.id", target = "author")
     AdsCreateDto toAdsCreateDto(Ads ads, Users users);
@@ -45,7 +95,7 @@ public interface AdsMapper {
                 .count(adsRepository.findAll().size())
                 .allResults(adsRepository.findAll()
                         .stream()
-                        .map(a -> toAdsDto(a, a.getImage(), a.getUser()))
+                        .map(a -> toAdsDto(a,a.getUser(),a.getImage()))
                         .collect(Collectors.toList()))
                 .build();
     }

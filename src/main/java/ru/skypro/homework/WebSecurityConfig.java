@@ -24,7 +24,7 @@ public class WebSecurityConfig {
     @Bean
     public InMemoryUserDetailsManager userDetailsService() {
         UserDetails user = User.withDefaultPasswordEncoder()
-                .username("user@gmail.com")
+                .username("USER@GMAIL.COM")
                 .password("password")
                 .roles("USER")
                 .build();

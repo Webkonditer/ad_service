@@ -59,6 +59,7 @@ public class Users {
 
     @OneToMany(mappedBy = "user")
     @JsonIgnore
+    @ToString.Exclude
     private Collection<Ads> ads;
 
     @OneToMany(mappedBy = "user")

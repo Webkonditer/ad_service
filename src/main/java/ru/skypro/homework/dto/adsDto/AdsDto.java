@@ -14,7 +14,7 @@ public class AdsDto {
     private Integer author;
 
     /**
-     * Поле - ссылка на фото объявления
+     * Поле - фото объявления
      */
     private String image;
 
