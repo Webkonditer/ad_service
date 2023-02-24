@@ -47,7 +47,7 @@ public class AdsService {
     public AdsDto getById(Integer adsId) {
         log.info("Was invoked method for get adsDto by id");
         Ads ad = adsRepository.findById(adsId).get();
-        return adsMapper.toAdsDto(ad, ad.getUser(),ad.getImage());
+        return adsMapper.toAdsDto(ad, ad.getUser(), ad.getImage());
     }
 
     public AdsAllDto getAllAds() {
@@ -69,7 +69,7 @@ public class AdsService {
         ad.setPrice(adsCreateDto.getPrice());
         ad.setTitle(adsCreateDto.getTitle());
         adsRepository.save(ad);
-        return adsMapper.toAdsDto(ad, ad.getUser(),ad.getImage());
+        return adsMapper.toAdsDto(ad, ad.getUser(), ad.getImage());
     }
 
     public CommentDto getComment(Integer adPk, Integer id) {
@@ -106,7 +106,7 @@ public class AdsService {
         return adsMapper.toCommentDto(comment, comment.getUser());
     }
 
-    public AdsDto addAds(AdsCreateDto adsCreateDto, MultipartFile image) {
+    public AdsDto addAds(AdsCreateDto adsCreateDto, MultipartFile image) throws IOException {
         log.info("Was invoked method for create ad");
 
         Ads ad = new Ads();
@@ -123,9 +123,7 @@ public class AdsService {
         log.warn("Картинка сохранена");
         adsRepository.save(ad);
 
-
-
-
+        imageService.updateAdsImage(image, ad.getPk());
 
 
 //        URL website = new URL("95.31.175.90/information.asp");
@@ -133,9 +131,7 @@ public class AdsService {
 //        FileOutputStream fos = new FileOutputStream("information.html");
 //        fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
 
-
-
-        return adsMapper.toAdsDto(ad,ad.getUser(),ad.getImage());
+        return adsMapper.toAdsDto(ad, ad.getUser(), ad.getImage());
     }
 
     public CommentDto addAdsComments(Integer adPk, CommentDto commentDto) {
@@ -147,7 +143,7 @@ public class AdsService {
         comment.setCreatedAt(Instant.now());
         comment.setText(commentDto.getText());
         comment.setAd(adsRepository.findById(commentDto.getPk()).get());
-        List<Comments> commentsList =  ad.get().getComments();
+        List<Comments> commentsList = ad.get().getComments();
         commentsList.add(comment);
 
         return adsMapper.toCommentDto(comment, comment.getUser());

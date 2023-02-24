@@ -73,3 +73,8 @@ ALTER TABLE avatars ADD COLUMN file_size BIGINT;
 
 -- changeset denis:2
 ALTER TABLE images DROP COLUMN ad_id;
+
+-- changeset andrey:1
+ALTER TABLE images add column link_for_front VARCHAR;
+ALTER TABLE images ADD COLUMN file_size BIGINT;
+ALTER TABLE images ADD COLUMN media_type VARCHAR;

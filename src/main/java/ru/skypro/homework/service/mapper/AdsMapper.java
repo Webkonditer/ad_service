@@ -22,9 +22,8 @@ import java.util.stream.Collectors;
 public interface AdsMapper {
     CommentDto toCommentDto(Comments comments, Users users);
 
-    @Mapping(source = "images.image", target = "image")
+    @Mapping(source = "images.linkForFront", target = "image")
     @Mapping(source = "users.id", target = "author")
-
      AdsDto toAdsDto(Ads ads, Users users,Images images);
 //     {
 
@@ -77,7 +76,7 @@ public interface AdsMapper {
 
     Ads toAds(AdsCreateDto dto);
 
-    @Mapping(source = "images.image", target = "image")
+    @Mapping(source = "images.linkForFront", target = "image")
     AdsByIdDto toDtoByUserId(Ads ads, Images images, Users users);
 
     default AdsCommentsDto toAdsCommentsDto(Ads ads) {

@@ -24,4 +24,18 @@ public class Images {
     @OneToOne(mappedBy = "image")
     @ToString.Exclude
     private Ads ads;
+
+    /**
+     * Поле - ссылка на контроллер кортинок для фронта
+     */
+    @Column(name="link_for_front")
+    private String linkForFront;
+
+    @Column(name="file_size")
+    private Long fileSize;
+
+    @Column(name="media_type")
+    private String mediaType;
+
+
 }

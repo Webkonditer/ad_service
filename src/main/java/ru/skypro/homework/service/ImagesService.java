@@ -6,23 +6,32 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.model.Ads;
+import ru.skypro.homework.model.Avatars;
 import ru.skypro.homework.model.Images;
+import ru.skypro.homework.model.Users;
+import ru.skypro.homework.repository.AdsRepository;
 import ru.skypro.homework.repository.ImagesRepository;
 import ru.skypro.homework.service.mapper.AdsMapper;
 
 import java.io.*;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.nio.file.StandardOpenOption.CREATE_NEW;
+
 @Service
 @Slf4j
 public class ImagesService {
-//    @Value("${images.location}")
+    private final AdsRepository adsRepository;
+    //    @Value("${images.location}")
 //    private String path;
     private final ImagesRepository imagesRepository;
-    public ImagesService(ImagesRepository imagesRepository) {
+    public ImagesService(ImagesRepository imagesRepository,
+                         AdsRepository adsRepository) {
         this.imagesRepository = imagesRepository;
+        this.adsRepository = adsRepository;
     }
 
     public Images getById(Integer imageId) {
@@ -89,4 +98,53 @@ public class ImagesService {
         return image;
     }
 
+    /**
+     * Метод обновляет картинку текущего объявления
+     * @param image картинка из фронта
+     * @return true или false
+     * @throws IOException
+     */
+    public Boolean updateAdsImage(MultipartFile image, Integer id) throws IOException {
+
+        Ads ads = adsRepository.findById(id).orElse(null);
+        if(ads == null){
+            log.info("Ad not found");
+            return false;
+        }
+        Path filePath = Path.of("/images", ads.getPk() + "_image." +
+                getExtensions(image.getOriginalFilename()));
+        Files.createDirectories(filePath.getParent());
+        Files.deleteIfExists(filePath);
+        try (
+                InputStream is = image.getInputStream();
+                OutputStream os = Files.newOutputStream(filePath, CREATE_NEW);
+                BufferedInputStream bis = new BufferedInputStream(is, 1024);
+                BufferedOutputStream bos = new BufferedOutputStream(os, 1024);
+        ) {
+            bis.transferTo(bos);
+        }
+        Images images = ads.getImage();
+        if(images == null) {
+            images = new Images();
+            images.setAds(ads);
+        }
+        images.setImage(filePath.toString());
+        images.setLinkForFront("/image/" + ads.getPk());
+        images.setFileSize(image.getSize());
+        images.setMediaType(image.getContentType());
+        imagesRepository.save(images);
+        ads.setImage(images);
+        adsRepository.save(ads);
+        return true;
+    }
+
+    /**
+     * Метод возвращает расширение файла
+     * @param fileName
+     * @return
+     */
+    private String getExtensions(String fileName) {
+        return fileName.substring(fileName.lastIndexOf(".") + 1);
+    }
 }
+

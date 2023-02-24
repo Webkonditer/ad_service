@@ -86,7 +86,8 @@ public class UserController {
     }
 
     @GetMapping(value = "/avatar/{id}")
-    public void downloadAvatar(@PathVariable Integer id, HttpServletResponse response) throws IOException {
+    public void downloadAvatar(@PathVariable Integer id,
+                               HttpServletResponse response) throws IOException {
         Users user = userRepository.findById(id).orElse(null);
         if (user == null) {
             return;

@@ -10,6 +10,8 @@ import ru.skypro.homework.dto.CommentDto;
 import ru.skypro.homework.dto.adsDto.*;
 import ru.skypro.homework.service.AdsService;
 
+import java.io.IOException;
+
 
 @CrossOrigin(value = "http://localhost:3000")
 @RestController
@@ -139,7 +141,7 @@ public class AdsController {
 
     @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<AdsDto> addAds(@RequestPart("properties") AdsCreateDto adsCreateDto,
-                                         @RequestPart MultipartFile image) {
+                                         @RequestPart MultipartFile image) throws IOException {
         if (true) {
             adsService.addAds(adsCreateDto, image);
             return ResponseEntity.ok().build();
