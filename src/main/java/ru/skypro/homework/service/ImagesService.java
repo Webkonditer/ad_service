@@ -66,8 +66,9 @@ public class ImagesService {
         }
     }
 
-    public byte[] update(Integer imageId, MultipartFile multipartFile) {
-//        log.info("Was invoked method for update image");
+    public Images update(Integer imageId, String image) {
+        log.info("Was invoked method for update image");
+        return imagesRepository.update(imageId, image);
 //        try {
 //            FileOutputStream out = new FileOutputStream(getById(imageId).getImage());
 //            out.write(multipartFile.getBytes());
@@ -75,7 +76,7 @@ public class ImagesService {
 //            return multipartFile.getBytes();
 //        } catch (IOException e) {
 //            e.printStackTrace();
-            return null;
+//            return null;
 //        }
     }
 

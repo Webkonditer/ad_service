@@ -72,4 +72,4 @@ ALTER TABLE avatars ADD COLUMN file_size BIGINT;
 
 
 -- changeset denis:2
-ALTER TABLE images DROP COLUMN user_id;
+ALTER TABLE images DROP COLUMN ad_id;
