@@ -65,17 +65,13 @@ public class UserService {
      * @return user сущность пользователя
      */
     public Users updateUser(UserDto userDto) {
-        Users user = userRepository.findById(userDto.getId()).orElse(null);
-        if(user == null){
-            log.info("User not found");
-            return null;
-        }
-        user.setEmail(userDto.getEmail());
-        user.setFirstName(userDto.getFirstName());
-        user.setLastName(userDto.getLastName());
-        user.setPhone(userDto.getPhone());
-        user.setRegDate(Instant.parse(userDto.getRegDate()));
-        user.setCity(userDto.getCity());
+        Users user = getUserByEmail();
+        if(userDto.getEmail() != null) {user.setEmail(userDto.getEmail());}
+        if(userDto.getFirstName() != null) {user.setFirstName(userDto.getFirstName());}
+        if(userDto.getLastName() != null) {user.setLastName(userDto.getLastName());}
+        if(userDto.getPhone() != null) {user.setPhone(userDto.getPhone());}
+        if(userDto.getRegDate() != null) {user.setRegDate(Instant.parse(userDto.getRegDate()));}
+        if(userDto.getCity() != null) {user.setCity(userDto.getCity());}
         userRepository.save(user);
         return user;
     }

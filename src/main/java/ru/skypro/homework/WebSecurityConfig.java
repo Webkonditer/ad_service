@@ -42,45 +42,6 @@ public class WebSecurityConfig {
         return jdbcUserDetailsManager;
     }
 
-    @Bean
-    public Authentication authentication() throws Exception {
-        return new Authentication() {
-            @Override
-            public Collection<? extends GrantedAuthority> getAuthorities() {
-                return null;
-            }
-
-            @Override
-            public Object getCredentials() {
-                return null;
-            }
-
-            @Override
-            public Object getDetails() {
-                return null;
-            }
-
-            @Override
-            public Object getPrincipal() {
-                return null;
-            }
-
-            @Override
-            public boolean isAuthenticated() {
-                return false;
-            }
-
-            @Override
-            public void setAuthenticated(boolean isAuthenticated) throws IllegalArgumentException {
-
-            }
-
-            @Override
-            public String getName() {
-                return null;
-            }
-        };
-    }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -90,6 +51,7 @@ public class WebSecurityConfig {
                         authz
                                 .mvcMatchers(AUTH_WHITELIST).permitAll()
                                 //.mvcMatchers("/ads/**", "/users/**").authenticated()
+                                .mvcMatchers("/ads/**", "/users/**").hasRole("USER")
 
                 )
                 .cors().and()

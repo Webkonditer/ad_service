@@ -29,19 +29,17 @@ public class AdsService {
     private final AdsMapper adsMapper;
     private final ImagesService imageService;
 
-    private final Principal principal;
 
     public AdsService(AdsRepository adsRepository, AdsMapper adsMapper,
                       CommentsRepository commentsRepository,
                       UserService userService,
-                      ImagesService imageService, Principal principal,
+                      ImagesService imageService,
                       UserRepository userRepository) {
         this.adsRepository = adsRepository;
         this.adsMapper = adsMapper;
         this.commentsRepository = commentsRepository;
         this.userService = userService;
         this.imageService = imageService;
-        this.principal = principal;
         this.userRepository = userRepository;
     }
 

@@ -57,16 +57,13 @@ public class UserController {
         Users user = userService.getUserByEmail();
         if (user == null) {
             return ResponseEntity.status(404).build();
-        } else if (false) {
-            return ResponseEntity.status(401).build();
-        } else if (false) {
-            return ResponseEntity.status(403).build();
         }
         return ResponseEntity.ok(UserMapper.INSTANCE.toDto(user));
     }
 
     @PatchMapping("/me")
     public ResponseEntity<UserDto> updateUser(@RequestBody UserDto userDto) {
+        System.out.println("UserDto " + userDto);
         Users user = userService.updateUser(userDto);
         if (user == null) {
             return ResponseEntity.status(404).build();
