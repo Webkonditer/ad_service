@@ -14,10 +14,8 @@ import ru.skypro.homework.repository.UserRepository;
 import ru.skypro.homework.service.mapper.AdsMapper;
 
 import java.io.IOException;
-import java.security.Principal;
 import java.time.Instant;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Slf4j
@@ -73,7 +71,7 @@ public class AdsService {
 
     public CommentDto getComment(Integer adPk, Integer id) {
         log.info("Was invoked method for get Comments by adId and commentId");
-        Users user = userService.getUserByEmail();
+        Users user = userService.getAuthorizedUser();
 //        Users user = userRepository.findById(id).orElse(null);
         Comments comment = commentsRepository.findByAd_PkAndPk(adPk, id);
 
@@ -117,7 +115,7 @@ public class AdsService {
         ad.setTitle(adsCreateDto.getTitle());
 
         ad.setCreatedAt(Instant.now());
-        ad.setUser(userService.getUserByEmail());
+        ad.setUser(userService.getAuthorizedUser());
 
         log.warn("Начало сохранения картинки");
         ad.setImage(imageService.create(image));
@@ -149,7 +147,7 @@ public class AdsService {
         }
 //        Optional<Ads> ad = adsRepository.findById(adPk);
         Comments comment = new Comments();
-        comment.setUser(userService.getUserByEmail());
+        comment.setUser(userService.getAuthorizedUser());
         comment.setCreatedAt(Instant.now());
         comment.setText(commentDto.getText());
         comment.setAd(adsRepository.findById(adPk).orElse(null));

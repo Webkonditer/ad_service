@@ -1,10 +1,9 @@
 package ru.skypro.homework.service;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -39,18 +38,15 @@ public class UserService {
     }
 
     /**
-     * Метод берет из авторизации емейл текущего пользователя и достает из бд объект текущего пользователя
+     * Метод берет из авторизации username текущего пользователя и достает из бд объект текущего пользователя
      * @return user сущность пользователя
      */
-    public Users getUserByEmail() {
-
+    public Users getAuthorizedUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         //if (!(authentication instanceof AnonymousAuthenticationToken)) {
             String currentUserName = authentication.getName();
-       // }
-        System.out.println("Vvvvvvvvvvv " + currentUserName);
-
-        Users user = userRepository.findByEmail(currentUserName);//"user@gmail.com");
+        // }
+        Users user = userRepository.findByEmail(currentUserName);
         if(user == null){
             log.info("User not found");
             return null;
@@ -65,7 +61,8 @@ public class UserService {
      * @return user сущность пользователя
      */
     public Users updateUser(UserDto userDto) {
-        Users user = getUserByEmail();
+        Users user = getAuthorizedUser();
+        if(user == null){return null;}
         if(userDto.getEmail() != null) {user.setEmail(userDto.getEmail());}
         if(userDto.getFirstName() != null) {user.setFirstName(userDto.getFirstName());}
         if(userDto.getLastName() != null) {user.setLastName(userDto.getLastName());}
@@ -83,17 +80,20 @@ public class UserService {
      * @return true или false
      */
     public Boolean setPassword(PasswordDto passwordDto) {
-        Users user = getUserByEmail();
-        if(user == null){
-            log.info("User not found");
+        Users user = getAuthorizedUser();
+
+        String encryptedPassword = user.getPassword();
+        String encryptedPasswordWithoutEncryptionType = encryptedPassword.substring(8);
+
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(8);
+        if(!encoder.matches(passwordDto.getCurrentPassword(), encryptedPasswordWithoutEncryptionType)) {
+            log.info("Invalid password");
             return false;
         }
-        if(user.getPassword().equals(passwordDto.getCurrentPassword())) {
-            user.setPassword(passwordDto.getNewPassword());
-            userRepository.save(user);
-            return true;
-        }
-        return false;
+        String encodedPassword = "{bcrypt}" + encoder.encode(passwordDto.getNewPassword());
+        manager.changePassword(passwordDto.getCurrentPassword(), encodedPassword);
+        return true;
+
     }
 
     /**
@@ -103,7 +103,7 @@ public class UserService {
      * @throws IOException
      */
     public Boolean updateUserImage(MultipartFile image) throws IOException {
-        Users user = getUserByEmail();
+        Users user = getAuthorizedUser();
         if(user == null){
             log.info("User not found");
             return false;
