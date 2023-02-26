@@ -3,10 +3,12 @@ package ru.skypro.homework.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
+import ru.skypro.homework.Role;
 
 import javax.persistence.*;
 import java.time.Instant;
 import java.util.Collection;
+import java.util.Set;
 
 /**
  * Класс - сущность пользователя
@@ -26,6 +28,7 @@ public class Users {
     /**
      * Поле - адрес электронной почты автора объявления
      */
+    @Column(name="username")
     private String email;
 
     /**
@@ -65,4 +68,10 @@ public class Users {
     @OneToMany(mappedBy = "user")
     @JsonIgnore
     private Collection<Comments> comments;
+
+//    @OneToMany(mappedBy = "user_id")
+//    @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
+//    @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
+//    @Enumerated(EnumType.STRING)
+//    private Set<Role> authorities;
 }

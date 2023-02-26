@@ -36,6 +36,7 @@ public class ImageController {
     @PatchMapping("/{id}")
     public ResponseEntity<String> updateAdsImage(@PathVariable Integer id,
                                                  @RequestBody String image)  {
+
         if (imagesService.getAdsImageById(id)!=null) {
             return ResponseEntity.ok(imagesService.update(id,image).getImage());
         }

@@ -78,3 +78,28 @@ ALTER TABLE images DROP COLUMN ad_id;
 ALTER TABLE images add column link_for_front VARCHAR;
 ALTER TABLE images ADD COLUMN file_size BIGINT;
 ALTER TABLE images ADD COLUMN media_type VARCHAR;
+
+-- changeset alexander:8
+drop table users;
+CREATE TABLE users
+(
+    user_id         SERIAL,
+    username        VARCHAR(255) not null primary key,
+    password        VARCHAR(255) not null,
+    enabled         boolean not null,
+    first_name      VARCHAR,
+    last_name       VARCHAR,
+    phone           VARCHAR,
+    reg_date        TIMESTAMP,
+    city            VARCHAR,
+    avatar_id       INT
+);
+
+CREATE TABLE authorities
+(
+    username         VARCHAR(255) not null,
+    authority        VARCHAR(255) not null,
+    foreign key (username) references users (username),
+    unique (username, authority)
+);
+

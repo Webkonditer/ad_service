@@ -4,23 +4,17 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.dto.CommentDto;
-import ru.skypro.homework.dto.UserDto;
 import ru.skypro.homework.dto.adsDto.*;
 import ru.skypro.homework.model.Ads;
 import ru.skypro.homework.model.Comments;
-import ru.skypro.homework.model.Images;
 import ru.skypro.homework.model.Users;
 import ru.skypro.homework.repository.AdsRepository;
 import ru.skypro.homework.repository.CommentsRepository;
-import ru.skypro.homework.repository.ImagesRepository;
-import ru.skypro.homework.repository.UserRepository;
 import ru.skypro.homework.service.mapper.AdsMapper;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
+import java.security.Principal;
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,15 +27,18 @@ public class AdsService {
     private final AdsMapper adsMapper;
     private final ImagesService imageService;
 
+    private final Principal principal;
+
     public AdsService(AdsRepository adsRepository, AdsMapper adsMapper,
                       CommentsRepository commentsRepository,
                       UserService userService,
-                      ImagesService imageService) {
+                      ImagesService imageService, Principal principal) {
         this.adsRepository = adsRepository;
         this.adsMapper = adsMapper;
         this.commentsRepository = commentsRepository;
         this.userService = userService;
         this.imageService = imageService;
+        this.principal = principal;
     }
 
     public AdsDto getById(Integer adsId) {

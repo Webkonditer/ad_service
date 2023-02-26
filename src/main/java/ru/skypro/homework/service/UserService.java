@@ -1,6 +1,11 @@
 package ru.skypro.homework.service;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.dto.PasswordDto;
@@ -25,9 +30,12 @@ import static java.nio.file.StandardOpenOption.CREATE_NEW;
 public class UserService {
     private final UserRepository userRepository;
     private final AvatarsRepository avatarsRepository;
-    public UserService(AdsRepository adsRepository, UserRepository userRepository, AdsMapper adsMapper, ImagesRepository imagesRepository, AvatarsRepository avatarsRepository) {
+    private final UserDetailsManager manager;
+
+    public UserService(AdsRepository adsRepository, UserRepository userRepository, AdsMapper adsMapper, ImagesRepository imagesRepository, AvatarsRepository avatarsRepository, UserDetailsManager manager) {
         this.userRepository = userRepository;
         this.avatarsRepository = avatarsRepository;
+        this.manager = manager;
     }
 
     /**
@@ -35,8 +43,14 @@ public class UserService {
      * @return user сущность пользователя
      */
     public Users getUserByEmail() {
-        String email = "USER@GMAIL.COM";//Заглушка
-        Users user = userRepository.findByEmail(email);
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        //if (!(authentication instanceof AnonymousAuthenticationToken)) {
+            String currentUserName = authentication.getName();
+       // }
+        System.out.println("Vvvvvvvvvvv " + currentUserName);
+
+        Users user = userRepository.findByEmail(currentUserName);//"user@gmail.com");
         if(user == null){
             log.info("User not found");
             return null;
