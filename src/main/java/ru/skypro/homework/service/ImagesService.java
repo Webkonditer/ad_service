@@ -1,23 +1,17 @@
 package ru.skypro.homework.service;
 
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.cfg.Environment;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.model.Ads;
-import ru.skypro.homework.model.Avatars;
 import ru.skypro.homework.model.Images;
-import ru.skypro.homework.model.Users;
 import ru.skypro.homework.repository.AdsRepository;
 import ru.skypro.homework.repository.ImagesRepository;
-import ru.skypro.homework.service.mapper.AdsMapper;
 
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Objects;
 
 import static java.nio.file.StandardOpenOption.CREATE_NEW;
 
@@ -28,6 +22,7 @@ public class ImagesService {
     //    @Value("${images.location}")
 //    private String path;
     private final ImagesRepository imagesRepository;
+
     public ImagesService(ImagesRepository imagesRepository,
                          AdsRepository adsRepository) {
         this.imagesRepository = imagesRepository;
@@ -40,7 +35,7 @@ public class ImagesService {
         if (image == null) {
             log.warn("Getting image = null");
         }
-        log.debug("Getting image = {}",image);
+        log.debug("Getting image = {}", image);
         return image;
     }
 
@@ -93,26 +88,28 @@ public class ImagesService {
         log.info("Was invoked method for check ads image by id");
         Images image = imagesRepository.findById(imageId).orElse(null);
         if (image == null || image.getAds() == null) {
-            log.error("There is not ads image with id = {}",imageId);
+            log.error("There is not ads image with id = {}", imageId);
         }
         return image;
     }
 
     /**
-     * Метод обновляет картинку текущего объявления
+     * Метод обновляет картинку нового объявления
+     *
      * @param image картинка из фронта
+     * @param id    - id объявления
      * @return true или false
      * @throws IOException
      */
     public Boolean updateAdsImage(MultipartFile image, Integer id) throws IOException {
 
         Ads ads = adsRepository.findById(id).orElse(null);
-        if(ads == null){
+        if (ads == null) {
             log.info("Ad not found");
             return false;
         }
         Path filePath = Path.of("/images", ads.getPk() + "_image." +
-                getExtensions(image.getOriginalFilename()));
+                getExtensions(Objects.requireNonNull(image.getOriginalFilename())));
         Files.createDirectories(filePath.getParent());
         Files.deleteIfExists(filePath);
         try (
@@ -124,22 +121,26 @@ public class ImagesService {
             bis.transferTo(bos);
         }
         Images images = ads.getImage();
-        if(images == null) {
+        if (images == null) {
             images = new Images();
             images.setAds(ads);
         }
+
+
         images.setImage(filePath.toString());
         images.setLinkForFront("/image/" + ads.getPk());
         images.setFileSize(image.getSize());
         images.setMediaType(image.getContentType());
-        imagesRepository.save(images);
+        images = imagesRepository.save(images);
         ads.setImage(images);
         adsRepository.save(ads);
         return true;
     }
 
+
     /**
      * Метод возвращает расширение файла
+     *
      * @param fileName
      * @return
      */

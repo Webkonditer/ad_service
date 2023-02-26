@@ -8,7 +8,9 @@ import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.dto.adsDto.AdsDto;
 import ru.skypro.homework.dto.CommentDto;
 import ru.skypro.homework.dto.adsDto.*;
+import ru.skypro.homework.model.Ads;
 import ru.skypro.homework.service.AdsService;
+import ru.skypro.homework.service.ImagesService;
 
 import java.io.IOException;
 
@@ -18,9 +20,11 @@ import java.io.IOException;
 @RequestMapping("/ads")
 public class AdsController {
     private final AdsService adsService;
+    private final ImagesService imagesService;
 
-    public AdsController(AdsService adsService) {
+    public AdsController(AdsService adsService, ImagesService imagesService) {
         this.adsService = adsService;
+        this.imagesService = imagesService;
     }
 
     @GetMapping()
@@ -38,7 +42,7 @@ public class AdsController {
     }
 
     @GetMapping("/me")
-    public ResponseEntity<AdsAllDto> getAdsMe(
+    public ResponseEntity<AdsMeDto> getAdsMe(
 //            @RequestParam(required = false) Boolean authenticated,
 //            @RequestParam(required = false, name = "authorities[0].authority") String authorities,
 //            @RequestParam(required = false) Object credentials,
@@ -46,7 +50,7 @@ public class AdsController {
 //            @RequestParam(required = false) Object principal
     ) {
         if (true) {
-            return ResponseEntity.ok(adsService.getAllAds());
+            return ResponseEntity.ok(adsService.getAllAdsMe());
         } else if (false) {
             return ResponseEntity.status(401).build();
         } else if (false) {
@@ -147,6 +151,18 @@ public class AdsController {
         }
         return null;
     }
+
+//    @PatchMapping(value = "/{id}/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+//    public ResponseEntity<String> updateAdsImage(@PathVariable Integer id,
+//                                                 @RequestParam MultipartFile multipartFile)
+//            throws IOException {
+//
+//        Boolean updateAdImageDone = imagesService.updateAdsImage(multipartFile, id);
+//        if (updateAdImageDone) {
+//            return ResponseEntity.ok().build();
+//        }
+//        return ResponseEntity.status(404).build();
+//    }
 
     @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<AdsDto> addAds(@RequestPart("properties") AdsCreateDto adsCreateDto,

@@ -17,7 +17,6 @@ import java.io.IOException;
 import java.security.Principal;
 import java.time.Instant;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Slf4j
@@ -51,6 +50,11 @@ public class AdsService {
 
     public AdsAllDto getAllAds() {
         return adsMapper.toAdsAllDto(adsRepository);
+    }
+
+    public AdsMeDto getAllAdsMe() {
+        Integer id = userService.getUserByEmail().getId();
+        return adsMapper.toAdsAllDtoMe(adsRepository, id);
     }
 
     public AdsCommentsDto getAdsComments(Integer adsId) {

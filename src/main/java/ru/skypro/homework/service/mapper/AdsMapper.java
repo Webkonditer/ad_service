@@ -24,7 +24,7 @@ public interface AdsMapper {
 
     @Mapping(source = "images.linkForFront", target = "image")
     @Mapping(source = "users.id", target = "author")
-     AdsDto toAdsDto(Ads ads, Users users,Images images);
+    AdsDto toAdsDto(Ads ads, Users users, Images images);
 //     {
 
 //        // read entire line as string
@@ -69,7 +69,6 @@ public interface AdsMapper {
 //    }
 
 
-
     @Mapping(source = "users.id", target = "author")
     AdsCreateDto toAdsCreateDto(Ads ads, Users users);
 
@@ -94,7 +93,19 @@ public interface AdsMapper {
                 .count(adsRepository.findAll().size())
                 .allResults(adsRepository.findAll()
                         .stream()
-                        .map(a -> toAdsDto(a,a.getUser(),a.getImage()))
+                        .map(a -> toAdsDto(a, a.getUser(), a.getImage()))
+                        .collect(Collectors.toList()))
+                .build();
+    }
+
+    default AdsMeDto toAdsAllDtoMe(AdsRepository adsRepository, Integer id) {
+        return AdsMeDto.builder()
+//                .count(adsRepository.findAll().size())
+                .allResults(adsRepository.findAll()
+//                        .
+                        .stream()
+                        .filter(ads -> ads.getUser().getId().equals(id))
+                        .map(a -> toAdsDto(a, a.getUser(), a.getImage()))
                         .collect(Collectors.toList()))
                 .build();
     }

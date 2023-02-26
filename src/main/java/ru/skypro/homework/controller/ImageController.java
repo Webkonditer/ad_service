@@ -1,14 +1,11 @@
 package ru.skypro.homework.controller;
 
-import org.springframework.aop.framework.AdvisedSupportListener;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.model.Ads;
-import ru.skypro.homework.model.Avatars;
 import ru.skypro.homework.model.Images;
-import ru.skypro.homework.model.Users;
 import ru.skypro.homework.repository.AdsRepository;
 import ru.skypro.homework.service.ImagesService;
 
@@ -18,8 +15,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-
-import static liquibase.repackaged.net.sf.jsqlparser.util.validation.metadata.NamedObject.user;
 
 @CrossOrigin(value = "http://localhost:3000")
 @RestController
@@ -36,7 +31,8 @@ public class ImageController {
 
     @PatchMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<String> updateAdsImage(@PathVariable Integer id,
-                                                 @RequestParam MultipartFile multipartFile) throws IOException {
+                                                 @RequestParam MultipartFile multipartFile)
+            throws IOException {
         Boolean updateAdImageDone = imagesService.updateAdsImage(multipartFile, id);
         if (updateAdImageDone) {
             return ResponseEntity.ok().build();
