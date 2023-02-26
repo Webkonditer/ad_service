@@ -85,8 +85,9 @@ public class AdsService {
 
 
     public void deleteComment(Integer adPk, Integer id) {
-        log.info("Was invoked method for delete Comment by adId and authorId");
-        commentsRepository.deleteByAd_PkAndUser(adPk, id);
+        log.info("Was invoked method for delete Comment by adId and commentId");
+        Comments comment = commentsRepository.findByAd_PkAndPk(adPk, id);
+        commentsRepository.delete(comment);
 
     }
 
@@ -137,6 +138,10 @@ public class AdsService {
         return adsMapper.toAdsDto(ad, ad.getUser(), ad.getImage());
     }
 
+    /** Метод для добавления комментария к объявлению
+     * adPk - id объявления
+     * commentDto - dto с комментарием
+     * */
     public CommentDto addAdsComments(Integer adPk, CommentDto commentDto) {
         log.info("Was invoked method for add comment for ad");
 

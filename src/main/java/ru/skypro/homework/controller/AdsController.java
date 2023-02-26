@@ -97,6 +97,10 @@ public class AdsController {
         return null;
     }
 
+    /** Метод для удаления комментария по id объявления и id комментария
+     * adPk - id объявления
+     * id - id комментария
+    * */
     @DeleteMapping("/{adPk}/comments/{id}")
     public ResponseEntity<Object> deleteComments(@PathVariable Integer adPk,
                                                  @PathVariable Integer id) {

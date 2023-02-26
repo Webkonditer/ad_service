@@ -29,7 +29,7 @@ public class Ads {
      * Поле - связь объявление с сущностью User
      */
     @ManyToOne
-    @JsonIgnore
+//    @JsonIgnore
     @JoinColumn(name = "user_id")
     private Users user;
 
@@ -38,7 +38,7 @@ public class Ads {
      * Поле - картинка - визуализация объявления
      */
     @OneToOne
-    @JsonIgnore
+//    @JsonIgnore
     @JoinColumn(name = "image_id")
     private Images image;
 
@@ -60,14 +60,14 @@ public class Ads {
     /**
      * Поле - время создания объявления
      */
-    @JsonIgnore
+//    @JsonIgnore
     private Instant createdAt;
 
     /**
      * Поле - список комментариев/отзывов пользователя
      */
     @OneToMany(mappedBy = "ad")
-    @JsonIgnore
+//    @JsonIgnore
     private List<Comments> comments;
 
 

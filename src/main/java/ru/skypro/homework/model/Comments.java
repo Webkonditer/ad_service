@@ -23,7 +23,7 @@ public class Comments {
     /**
      * Поле - время создания комментария
      */
-    @JsonIgnore
+//    @JsonIgnore
     private Instant createdAt;
 
     /**
@@ -33,12 +33,12 @@ public class Comments {
     private String text;
 
     @ManyToOne
-    @JsonIgnore
+//    @JsonIgnore
     @JoinColumn(name = "user_id")
     private Users user;
 
     @ManyToOne
-    @JsonIgnore
+//    @JsonIgnore
     @JoinColumn(name = "ad_id")
     private Ads ad;
 
