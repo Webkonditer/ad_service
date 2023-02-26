@@ -8,6 +8,7 @@ import java.util.List;
 public interface CommentsRepository extends CrudRepository<Comments, Integer> {
 
     Comments findByAd_PkAndUser(Integer adPk, Integer id);
+    Comments findByAd_PkAndPk(Integer adPk, Integer id);
 
     void deleteByAd_PkAndUser(Integer adPk, Integer id);
 }

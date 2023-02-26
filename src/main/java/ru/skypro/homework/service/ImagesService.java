@@ -75,19 +75,19 @@ public class ImagesService {
         }
     }
 
-    public Images update(Integer imageId, String image) {
-        log.info("Was invoked method for update image");
-        return imagesRepository.update(imageId, image);
-//        try {
-//            FileOutputStream out = new FileOutputStream(getById(imageId).getImage());
-//            out.write(multipartFile.getBytes());
-//            out.close();
-//            return multipartFile.getBytes();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//            return null;
-//        }
-    }
+//    public Images update(Integer imageId, MultipartFile multipartFile) {
+//        log.info("Was invoked method for update image");
+//        return imagesRepository.update(imageId, multipartFile);
+////        try {
+////            FileOutputStream out = new FileOutputStream(getById(imageId).getImage());
+////            out.write(multipartFile.getBytes());
+////            out.close();
+////            return multipartFile.getBytes();
+////        } catch (IOException e) {
+////            e.printStackTrace();
+////            return null;
+////        }
+//    }
 
     public Images getAdsImageById(Integer imageId) {
         log.info("Was invoked method for check ads image by id");

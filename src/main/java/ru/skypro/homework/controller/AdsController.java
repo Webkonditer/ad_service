@@ -38,11 +38,13 @@ public class AdsController {
     }
 
     @GetMapping("/me")
-    public ResponseEntity<AdsAllDto> getAdsMe(@RequestParam(required = false) Boolean authenticated,
-                                              @RequestParam(required = false, name = "authorities[0].authority") String authorities,
-                                              @RequestParam(required = false) Object credentials,
-                                              @RequestParam(required = false) Object details,
-                                              @RequestParam(required = false) Object principal) {
+    public ResponseEntity<AdsAllDto> getAdsMe(
+//            @RequestParam(required = false) Boolean authenticated,
+//            @RequestParam(required = false, name = "authorities[0].authority") String authorities,
+//            @RequestParam(required = false) Object credentials,
+//            @RequestParam(required = false) Object details,
+//            @RequestParam(required = false) Object principal
+    ) {
         if (true) {
             return ResponseEntity.ok(adsService.getAllAds());
         } else if (false) {
@@ -57,7 +59,8 @@ public class AdsController {
 
 
     @PatchMapping("/{id}")
-    public ResponseEntity<AdsDto> updateAds(@PathVariable Integer id, @RequestBody AdsCreateDto adsCreateDto) {
+    public ResponseEntity<AdsDto> updateAds(@PathVariable Integer id,
+                                            @RequestBody AdsCreateDto adsCreateDto) {
         if (true) {
             return ResponseEntity.ok(adsService.updateAds(id, adsCreateDto));
         } else if (false) {
@@ -84,7 +87,8 @@ public class AdsController {
     }
 
     @GetMapping("/{adPk}/comments/{id}")
-    public ResponseEntity<CommentDto> getComment(@PathVariable Integer adPk, @PathVariable Integer id) {
+    public ResponseEntity<CommentDto> getComment(@PathVariable Integer adPk,
+                                                 @PathVariable Integer id) {
         if (true) {
             return ResponseEntity.ok(adsService.getComment(adPk, id));
         } else if (false) {
@@ -94,7 +98,8 @@ public class AdsController {
     }
 
     @DeleteMapping("/{adPk}/comments/{id}")
-    public ResponseEntity<Object> deleteComments(@PathVariable Integer adPk, @PathVariable Integer id) {
+    public ResponseEntity<Object> deleteComments(@PathVariable Integer adPk,
+                                                 @PathVariable Integer id) {
         if (true) {
             adsService.deleteComment(adPk, id);
             return ResponseEntity.ok().build();
@@ -125,8 +130,8 @@ public class AdsController {
 
     @PatchMapping("/{adPk}/comments/{id}")
     public ResponseEntity<CommentDto> updateComments(@PathVariable Integer adPk,
-                                                     @PathVariable Integer id,
-                                                     @RequestBody CommentDto comment) {
+                                                     @RequestBody CommentDto comment,
+                                                     @PathVariable Integer id) {
         if (true) {
             return ResponseEntity.ok(adsService.updateComment(adPk, id, comment));
         } else if (false) {
@@ -155,7 +160,7 @@ public class AdsController {
         return null;
     }
 
-    @PostMapping("/{adPk}/comment")
+    @PostMapping("/{adPk}/comments")
     public ResponseEntity<CommentDto> addAdsComments(@PathVariable Integer adPk,
                                                      @RequestBody CommentDto commentDto) {
         if (true) {

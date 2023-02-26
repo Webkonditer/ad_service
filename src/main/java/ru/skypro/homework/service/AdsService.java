@@ -10,6 +10,7 @@ import ru.skypro.homework.model.Comments;
 import ru.skypro.homework.model.Users;
 import ru.skypro.homework.repository.AdsRepository;
 import ru.skypro.homework.repository.CommentsRepository;
+import ru.skypro.homework.repository.UserRepository;
 import ru.skypro.homework.service.mapper.AdsMapper;
 
 import java.io.IOException;
@@ -21,6 +22,7 @@ import java.util.Optional;
 @Service
 @Slf4j
 public class AdsService {
+    private final UserRepository userRepository;
     private final UserService userService;
     private final CommentsRepository commentsRepository;
     private final AdsRepository adsRepository;
@@ -32,13 +34,15 @@ public class AdsService {
     public AdsService(AdsRepository adsRepository, AdsMapper adsMapper,
                       CommentsRepository commentsRepository,
                       UserService userService,
-                      ImagesService imageService, Principal principal) {
+                      ImagesService imageService, Principal principal,
+                      UserRepository userRepository) {
         this.adsRepository = adsRepository;
         this.adsMapper = adsMapper;
         this.commentsRepository = commentsRepository;
         this.userService = userService;
         this.imageService = imageService;
         this.principal = principal;
+        this.userRepository = userRepository;
     }
 
     public AdsDto getById(Integer adsId) {
@@ -70,9 +74,11 @@ public class AdsService {
     }
 
     public CommentDto getComment(Integer adPk, Integer id) {
-        log.info("Was invoked method for get Comments by adId and authorId");
+        log.info("Was invoked method for get Comments by adId and commentId");
         Users user = userService.getUserByEmail();
-        Comments comment = commentsRepository.findByAd_PkAndUser(adPk, id);
+//        Users user = userRepository.findById(id).orElse(null);
+        Comments comment = commentsRepository.findByAd_PkAndPk(adPk, id);
+
 
         return adsMapper.toCommentDto(comment, user);
     }
@@ -134,14 +140,23 @@ public class AdsService {
     public CommentDto addAdsComments(Integer adPk, CommentDto commentDto) {
         log.info("Was invoked method for add comment for ad");
 
-        Optional<Ads> ad = adsRepository.findById(adPk);
+        Ads ad = adsRepository.findById(adPk).orElse(null);
+        if (ad == null) {
+            log.warn("Ad not found from id = " + adPk);
+        }
+//        Optional<Ads> ad = adsRepository.findById(adPk);
         Comments comment = new Comments();
         comment.setUser(userService.getUserByEmail());
         comment.setCreatedAt(Instant.now());
         comment.setText(commentDto.getText());
-        comment.setAd(adsRepository.findById(commentDto.getPk()).get());
-        List<Comments> commentsList = ad.get().getComments();
+        comment.setAd(adsRepository.findById(adPk).orElse(null));
+        commentsRepository.save(comment);
+
+//        для чего?
+        assert ad != null;
+        List<Comments> commentsList = ad.getComments();
         commentsList.add(comment);
+
 
         return adsMapper.toCommentDto(comment, comment.getUser());
     }
