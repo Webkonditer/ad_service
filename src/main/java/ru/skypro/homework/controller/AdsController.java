@@ -3,8 +3,6 @@ package ru.skypro.homework.controller;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.dto.adsDto.AdsDto;
@@ -13,6 +11,7 @@ import ru.skypro.homework.dto.adsDto.*;
 import ru.skypro.homework.model.Ads;
 import ru.skypro.homework.model.Comments;
 import ru.skypro.homework.model.Users;
+import ru.skypro.homework.repository.AdsRepository;
 import ru.skypro.homework.repository.CommentsRepository;
 import ru.skypro.homework.service.AdsService;
 import ru.skypro.homework.service.ImagesService;
@@ -31,12 +30,18 @@ public class AdsController {
     private final CommentsRepository commentsRepository;
     private final UserService userService;
 
-    public AdsController(AdsService adsService, ImagesService imagesService) {
-    public AdsController(AdsService adsService, CommentsRepository commentsRepository, UserService userService) {
+    private final AdsRepository adsRepository;
+
+    public AdsController(AdsService adsService,
+                         ImagesService imagesService,
+                         CommentsRepository commentsRepository,
+                         UserService userService,
+                         AdsRepository adsRepository) {
         this.adsService = adsService;
         this.imagesService = imagesService;
         this.commentsRepository = commentsRepository;
         this.userService = userService;
+        this.adsRepository = adsRepository;
     }
 
     @GetMapping()
@@ -113,17 +118,18 @@ public class AdsController {
         return null;
     }
 
-    /** Метод для удаления комментария по id объявления и id комментария
+    /**
+     * Метод для удаления комментария по id объявления и id комментария
      * adPk - id объявления
      * id - id комментария
-    * */
+     */
     @DeleteMapping("/{adPk}/comments/{id}")
     public ResponseEntity<Object> deleteComments(@PathVariable Integer adPk,
                                                  @PathVariable Integer id,
                                                  HttpServletRequest request) {
         //только автор или админ может удалить комментарий
         Comments comment = commentsRepository.findByAd_PkAndPk(adPk, id);
-        if(comment == null) {
+        if (comment == null) {
             return ResponseEntity.status(404).build();
         }
         Users user = userService.getAuthorizedUser();
@@ -133,6 +139,28 @@ public class AdsController {
         adsService.deleteComment(adPk, id);
         return ResponseEntity.ok().build();
         //===============================================
+    }
+
+
+    /**
+     * Метод для удаления объявления по id
+     * adPk - id объявления
+     * id - id комментария
+     */
+    @DeleteMapping("/{adPk}")
+    public ResponseEntity<Object> deleteAds(@PathVariable Integer adPk,
+                                            HttpServletRequest request) {
+        //только автор или админ может удалить комментарий
+        Ads ad = adsRepository.findAdsByPk(adPk);
+        if (ad == null) {
+            return ResponseEntity.status(404).build();
+        }
+        Users user = userService.getAuthorizedUser();
+        if (!request.isUserInRole("ROLE_ADMIN") && !user.getAds().contains(ad)) {
+            return ResponseEntity.status(403).build();
+        }
+        adsService.deleteAd(adPk);
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/{id}")

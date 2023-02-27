@@ -100,9 +100,7 @@ public interface AdsMapper {
 
     default AdsMeDto toAdsAllDtoMe(AdsRepository adsRepository, Integer id) {
         return AdsMeDto.builder()
-//                .count(adsRepository.findAll().size())
                 .allResults(adsRepository.findAll()
-//                        .
                         .stream()
                         .filter(ads -> ads.getUser().getId().equals(id))
                         .map(a -> toAdsDto(a, a.getUser(), a.getImage()))

@@ -52,7 +52,7 @@ public class AdsService {
     }
 
     public AdsMeDto getAllAdsMe() {
-        Integer id = userService.getUserByEmail().getId();
+        Integer id = userService.getAuthorizedUser().getId();
         return adsMapper.toAdsAllDtoMe(adsRepository, id);
     }
 
@@ -166,4 +166,11 @@ public class AdsService {
 
         return adsMapper.toCommentDto(comment, comment.getUser());
     }
+
+    public void deleteAd (Integer adPk) {
+        log.info("Was invoked method for delete Ad by adId");
+        Ads ad = adsRepository.findAdsByPk(adPk);
+        adsRepository.delete(ad);
+    }
+
 }

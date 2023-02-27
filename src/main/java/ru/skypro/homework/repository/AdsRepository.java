@@ -11,5 +11,6 @@ List<Ads> findAll();
 
 Ads findAdsByImageId(Integer id);
 
+Ads findAdsByPk(Integer pk);
 
 }
