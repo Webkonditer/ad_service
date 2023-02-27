@@ -3,15 +3,22 @@ package ru.skypro.homework.controller;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.dto.adsDto.AdsDto;
 import ru.skypro.homework.dto.CommentDto;
 import ru.skypro.homework.dto.adsDto.*;
 import ru.skypro.homework.model.Ads;
+import ru.skypro.homework.model.Comments;
+import ru.skypro.homework.model.Users;
+import ru.skypro.homework.repository.CommentsRepository;
 import ru.skypro.homework.service.AdsService;
 import ru.skypro.homework.service.ImagesService;
+import ru.skypro.homework.service.UserService;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 
@@ -21,10 +28,15 @@ import java.io.IOException;
 public class AdsController {
     private final AdsService adsService;
     private final ImagesService imagesService;
+    private final CommentsRepository commentsRepository;
+    private final UserService userService;
 
     public AdsController(AdsService adsService, ImagesService imagesService) {
+    public AdsController(AdsService adsService, CommentsRepository commentsRepository, UserService userService) {
         this.adsService = adsService;
         this.imagesService = imagesService;
+        this.commentsRepository = commentsRepository;
+        this.userService = userService;
     }
 
     @GetMapping()
@@ -107,20 +119,21 @@ public class AdsController {
     * */
     @DeleteMapping("/{adPk}/comments/{id}")
     public ResponseEntity<Object> deleteComments(@PathVariable Integer adPk,
-                                                 @PathVariable Integer id) {
-        if (true) {
-            adsService.deleteComment(adPk, id);
-            return ResponseEntity.ok().build();
-        } else if (false) {
-            return ResponseEntity.status(401).build();
-        } else if (false) {
-            return ResponseEntity.status(403).build();
-        } else if (false) {
+                                                 @PathVariable Integer id,
+                                                 HttpServletRequest request) {
+        //только автор или админ может удалить комментарий
+        Comments comment = commentsRepository.findByAd_PkAndPk(adPk, id);
+        if(comment == null) {
             return ResponseEntity.status(404).build();
         }
-        return null;
+        Users user = userService.getAuthorizedUser();
+        if (!request.isUserInRole("ROLE_ADMIN") && !user.getComments().contains(comment)) {
+            return ResponseEntity.status(403).build();
+        }
+        adsService.deleteComment(adPk, id);
+        return ResponseEntity.ok().build();
+        //===============================================
     }
-
 
     @GetMapping("/{id}")
     public ResponseEntity<AdsByIdDto> getAds(@PathVariable Integer id) {

@@ -1,12 +1,7 @@
 package ru.skypro.homework.controller;
 
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.dto.PasswordDto;
@@ -23,7 +18,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.security.Principal;
 
 @RestController
 @CrossOrigin(value = "http://localhost:3000")
@@ -43,18 +37,14 @@ public class UserController {
         Boolean setPasswordDone = userService.setPassword(passwordDto);
         if (setPasswordDone) {
             return ResponseEntity.ok(passwordDto);
-        } else if (false) {
-            return ResponseEntity.status(401).build();
-        } else if (false) {
-            return ResponseEntity.status(403).build();
         }
-        return ResponseEntity.status(404).build();
+        return ResponseEntity.status(403).build();
 
     }
 
     @GetMapping("/me")
     public ResponseEntity<UserDto> getUser() {
-        Users user = userService.getUserByEmail();
+        Users user = userService.getAuthorizedUser();
         if (user == null) {
             return ResponseEntity.status(404).build();
         }
@@ -63,17 +53,12 @@ public class UserController {
 
     @PatchMapping("/me")
     public ResponseEntity<UserDto> updateUser(@RequestBody UserDto userDto) {
-        System.out.println("UserDto " + userDto);
         Users user = userService.updateUser(userDto);
         if (user == null) {
             return ResponseEntity.status(404).build();
         } else if (false) {
             return ResponseEntity.status(204).build();
-        } else if (false) {
-            return ResponseEntity.status(401).build();
-        } else if (false) {
-            return ResponseEntity.status(403).build();
-        } else
+        }
             return ResponseEntity.ok(UserMapper.INSTANCE.toDto(user));
     }
 
