@@ -26,19 +26,16 @@ import java.io.IOException;
 @RequestMapping("/ads")
 public class AdsController {
     private final AdsService adsService;
-    private final ImagesService imagesService;
     private final CommentsRepository commentsRepository;
     private final UserService userService;
 
     private final AdsRepository adsRepository;
 
     public AdsController(AdsService adsService,
-                         ImagesService imagesService,
                          CommentsRepository commentsRepository,
                          UserService userService,
                          AdsRepository adsRepository) {
         this.adsService = adsService;
-        this.imagesService = imagesService;
         this.commentsRepository = commentsRepository;
         this.userService = userService;
         this.adsRepository = adsRepository;
@@ -59,13 +56,7 @@ public class AdsController {
     }
 
     @GetMapping("/me")
-    public ResponseEntity<AdsMeDto> getAdsMe(
-//            @RequestParam(required = false) Boolean authenticated,
-//            @RequestParam(required = false, name = "authorities[0].authority") String authorities,
-//            @RequestParam(required = false) Object credentials,
-//            @RequestParam(required = false) Object details,
-//            @RequestParam(required = false) Object principal
-    ) {
+    public ResponseEntity<AdsMeDto> getAdsMe() {
         if (true) {
             return ResponseEntity.ok(adsService.getAllAdsMe());
         } else if (false) {
@@ -92,12 +83,8 @@ public class AdsController {
         if (!request.isUserInRole("ROLE_ADMIN") && !user.getAds().contains(ad)) {
             return ResponseEntity.status(403).build();
         }
-
             return ResponseEntity.ok(adsService.updateAds(id, adsCreateDto));
 
-//        if (false) {
-//            return ResponseEntity.status(401).build(); }
-//        return null;
     }
 
 
