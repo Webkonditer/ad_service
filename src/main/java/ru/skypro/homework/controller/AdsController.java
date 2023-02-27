@@ -81,17 +81,23 @@ public class AdsController {
 
     @PatchMapping("/{id}")
     public ResponseEntity<AdsDto> updateAds(@PathVariable Integer id,
-                                            @RequestBody AdsCreateDto adsCreateDto) {
-        if (true) {
-            return ResponseEntity.ok(adsService.updateAds(id, adsCreateDto));
-        } else if (false) {
-            return ResponseEntity.status(401).build();
-        } else if (false) {
-            return ResponseEntity.status(403).build();
-        } else if (false) {
+                                            @RequestBody AdsCreateDto adsCreateDto,
+                                            HttpServletRequest request) {
+        //только автор или админ может удалить комментарий
+        Ads ad = adsRepository.findAdsByPk(id);
+        if (ad == null) {
             return ResponseEntity.status(404).build();
         }
-        return null;
+        Users user = userService.getAuthorizedUser();
+        if (!request.isUserInRole("ROLE_ADMIN") && !user.getAds().contains(ad)) {
+            return ResponseEntity.status(403).build();
+        }
+
+            return ResponseEntity.ok(adsService.updateAds(id, adsCreateDto));
+
+//        if (false) {
+//            return ResponseEntity.status(401).build(); }
+//        return null;
     }
 
 
