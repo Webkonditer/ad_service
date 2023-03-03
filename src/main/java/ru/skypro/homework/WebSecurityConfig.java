@@ -30,6 +30,8 @@ public class WebSecurityConfig {
             "/swagger-ui.html",
             "/v3/api-docs",
             "/webjars/**",
+            "/users/me/image",
+            "/users/avatar/*",
             "/image/**",
             "/avatar/**",
             "/ads",
@@ -52,6 +54,7 @@ public class WebSecurityConfig {
                                 .mvcMatchers(AUTH_WHITELIST).permitAll()
                                 //.mvcMatchers("/ads/**", "/users/**").authenticated()
                                 .mvcMatchers("/ads/**", "/users/**").hasRole("USER")
+                                .mvcMatchers("/ads/**", "/users/**").hasRole("ADMIN")
 
                 )
                 .cors().and()
