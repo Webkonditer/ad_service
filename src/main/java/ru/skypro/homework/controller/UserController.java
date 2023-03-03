@@ -62,7 +62,7 @@ public class UserController {
             return ResponseEntity.ok(UserMapper.INSTANCE.toDto(user));
     }
 
-    @PostMapping(value = "/me/image", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    @PatchMapping(value = "/me/image", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<String> updateUserImage(@RequestParam MultipartFile image) throws IOException {
         Boolean updateUserImageDone = userService.updateUserImage(image);
         if (updateUserImageDone) {
