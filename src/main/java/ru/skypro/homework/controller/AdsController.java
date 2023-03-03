@@ -126,7 +126,11 @@ public class AdsController {
             return ResponseEntity.status(404).build();
         }
         Users user = userService.getAuthorizedUser();
-        if (!request.isUserInRole("ROLE_ADMIN") && !user.getComments().contains(comment)) {
+        if (!request.isUserInRole("ROLE_ADMIN") &&
+                !user.getComments().stream()
+                                .anyMatch(x->x.getText().equals(comment.getText())))
+//                        contains(comment.getText()))
+        {
             return ResponseEntity.status(403).build();
         }
         adsService.deleteComment(adPk, id);
