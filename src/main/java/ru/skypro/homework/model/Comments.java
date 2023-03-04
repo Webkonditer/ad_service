@@ -1,10 +1,7 @@
 package ru.skypro.homework.model;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
-import org.hibernate.annotations.NotFound;
-import org.hibernate.annotations.NotFoundAction;
 
 import javax.persistence.*;
 import java.time.Instant;
@@ -35,14 +32,11 @@ public class Comments {
     private String text;
 
     @ManyToOne
-//    @JsonIgnore
     @JoinColumn(name = "user_id")
     private Users user;
 
     @ManyToOne
-//    @JsonIgnore
     @JoinColumn(name = "ad_id")
-    @NotFound(action = NotFoundAction.IGNORE)
     private Ads ad;
 
 }

@@ -98,13 +98,26 @@ public class AdsService {
         return adsMapper.toDtoByUserId(ad, ad.getImage(), ad.getUser());
     }
 
-
+    /**
+     * id - идентификатор комментария
+     */
     public CommentDto updateComment(Integer adPk, Integer id, CommentDto commentDto) {
         log.info("Was invoked method for update Comment");
-        if (!commentsRepository.existsById(id)) {
+        if (commentsRepository.findByPk(id) == null) {
             return null;
         }
-        Comments comment = commentsRepository.findByAd_PkAndUser(adPk, id);
+        Comments comment = commentsRepository.findByPk(id);
+        Users user = userRepository.findById(commentDto.getId()).orElse(null);
+        Ads ad = adsRepository.findById(adPk).orElse(null);
+
+        if (user == null || ad == null) {
+            return null;
+        }
+
+        if (!user.getComments().contains(comment) || !ad.getComments().contains(comment)) {
+            return null;
+        }
+
         comment.setText(commentDto.getText());
         comment.setCreatedAt(Instant.parse(commentDto.getCreatedAt()));
         commentsRepository.save(comment);
@@ -139,10 +152,11 @@ public class AdsService {
         return adsMapper.toAdsDto(ad, ad.getUser(), ad.getImage());
     }
 
-    /** Метод для добавления комментария к объявлению
+    /**
+     * Метод для добавления комментария к объявлению
      * adPk - id объявления
      * commentDto - dto с комментарием
-     * */
+     */
     public CommentDto addAdsComments(Integer adPk, CommentDto commentDto) {
         log.info("Was invoked method for add comment for ad");
 
@@ -167,7 +181,7 @@ public class AdsService {
         return adsMapper.toCommentDto(comment, comment.getUser());
     }
 
-    public void deleteAd (Integer adPk) {
+    public void deleteAd(Integer adPk) {
         log.info("Was invoked method for delete Ad by adId");
         Ads ad = adsRepository.findAdsByPk(adPk);
         adsRepository.delete(ad);
