@@ -31,10 +31,16 @@ public class Comments {
     @Column(name="comment_text")
     private String text;
 
+    /**
+     * Поле - id пользователя
+     */
     @ManyToOne
     @JoinColumn(name = "user_id")
     private Users user;
 
+    /**
+     * Поле - id объявления
+     */
     @ManyToOne
     @JoinColumn(name = "ad_id")
     private Ads ad;

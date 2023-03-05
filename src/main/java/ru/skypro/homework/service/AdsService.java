@@ -17,6 +17,9 @@ import java.io.IOException;
 import java.time.Instant;
 import java.util.List;
 
+/**
+ * Сервис для работы с объявлениями и комментариями/отзывами к ним
+ */
 @Service
 @Slf4j
 public class AdsService {
@@ -41,27 +44,48 @@ public class AdsService {
         this.userRepository = userRepository;
     }
 
+
+//    Метод не используется. Нужен?
     public AdsDto getById(Integer adsId) {
         log.info("Was invoked method for get adsDto by id");
         Ads ad = adsRepository.findById(adsId).get();
         return adsMapper.toAdsDto(ad, ad.getUser(), ad.getImage());
     }
 
+    /**
+     * Метод для получения всех объявлений всех пользователей
+     *
+     */
     public AdsAllDto getAllAds() {
         return adsMapper.toAdsAllDto(adsRepository);
     }
 
+    /**
+     * Метод для получения всех объявлений пользователя-автора объявлений
+     *
+     */
     public AdsMeDto getAllAdsMe() {
         Integer id = userService.getAuthorizedUser().getId();
         return adsMapper.toAdsAllDtoMe(adsRepository, id);
     }
 
+    /**
+     * Метод для получения всех комментариев объявления
+     *
+     * @param adsId идентификатор объявления
+     */
     public AdsCommentsDto getAdsComments(Integer adsId) {
         log.info("Was invoked method for get adsComments by adsId");
         Ads ad = adsRepository.findById(adsId).get();
         return adsMapper.toAdsCommentsDto(ad);
     }
 
+    /**
+     * Метод для редактирования объявлению
+     *
+     * @param id           идентификатор объявления
+     * @param adsCreateDto ДТО, содержащий информацию для создания/обновления объявления
+     */
     public AdsDto updateAds(Integer id, AdsCreateDto adsCreateDto) {
         if (!adsRepository.existsById(id)) {
             return null;
@@ -74,6 +98,12 @@ public class AdsService {
         return adsMapper.toAdsDto(ad, ad.getUser(), ad.getImage());
     }
 
+    /**
+     * Метод для получения комментария к объявлению
+     *
+     * @param id   идентификатор комментария
+     * @param adPk идентификатор объявления
+     */
     public CommentDto getComment(Integer adPk, Integer id) {
         log.info("Was invoked method for get Comments by adId and commentId");
         Users user = userService.getAuthorizedUser();
@@ -84,7 +114,12 @@ public class AdsService {
         return adsMapper.toCommentDto(comment, user);
     }
 
-
+    /**
+     * Метод для удаления комментария
+     *
+     * @param adPk id объявления
+     * @param id   id комментария
+     */
     public void deleteComment(Integer adPk, Integer id) {
         log.info("Was invoked method for delete Comment by adId and commentId");
         Comments comment = commentsRepository.findByAd_PkAndPk(adPk, id);
@@ -92,6 +127,11 @@ public class AdsService {
 
     }
 
+    /**
+     * Метод для получения объявления по его id
+     *
+     * @param id id объявления
+     */
     public AdsByIdDto getAds(Integer id) {
         log.info("Was invoked method for get Ads by id");
         Ads ad = adsRepository.findById(id).get();
@@ -99,7 +139,11 @@ public class AdsService {
     }
 
     /**
-     * id - идентификатор комментария
+     * Метод для редактирования ранее размещенного комментария к объявлению
+     *
+     * @param id         идентификатор комментария
+     * @param adPk       идентификатор объявления
+     * @param commentDto ДТО, содержащий информацию для создания/обновления комментария
      */
     public CommentDto updateComment(Integer adPk, Integer id, CommentDto commentDto) {
         log.info("Was invoked method for update Comment");
@@ -124,6 +168,13 @@ public class AdsService {
         return adsMapper.toCommentDto(comment, comment.getUser());
     }
 
+
+    /**
+     * Метод для создания нового объявления
+     *
+     * @param image        файл, содержащий картинку для объявления
+     * @param adsCreateDto ДТО, содержащий информацию для создания объявления
+     */
     public AdsDto addAds(AdsCreateDto adsCreateDto, MultipartFile image) throws IOException {
         log.info("Was invoked method for create ad");
 
@@ -154,8 +205,9 @@ public class AdsService {
 
     /**
      * Метод для добавления комментария к объявлению
-     * adPk - id объявления
-     * commentDto - dto с комментарием
+     *
+     * @param adPk       id объявления
+     * @param commentDto ДТО, содержащий информацию для создания/обновления комментария
      */
     public CommentDto addAdsComments(Integer adPk, CommentDto commentDto) {
         log.info("Was invoked method for add comment for ad");
@@ -181,6 +233,11 @@ public class AdsService {
         return adsMapper.toCommentDto(comment, comment.getUser());
     }
 
+    /**
+     * Метод для удаления объявления
+     *
+     * @param adPk id объявления
+     */
     public void deleteAd(Integer adPk) {
         log.info("Was invoked method for delete Ad by adId");
         Ads ad = adsRepository.findAdsByPk(adPk);
