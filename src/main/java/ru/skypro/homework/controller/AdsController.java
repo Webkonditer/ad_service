@@ -20,7 +20,6 @@ import ru.skypro.homework.model.Users;
 import ru.skypro.homework.repository.AdsRepository;
 import ru.skypro.homework.repository.CommentsRepository;
 import ru.skypro.homework.service.AdsService;
-import ru.skypro.homework.service.ImagesService;
 import ru.skypro.homework.service.UserService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -70,16 +69,11 @@ public class AdsController {
     )
     @GetMapping()
     public ResponseEntity<AdsAllDto> getAllAds() {
-        if (true) {
-            return ResponseEntity.ok(adsService.getAllAds());
-        } else if (false) {
-            return ResponseEntity.status(401).build();
-        } else if (false) {
-            return ResponseEntity.status(403).build();
-        } else if (false) {
+        AdsAllDto adsAllDto = adsService.getAllAds();
+        if (adsAllDto == null) {
             return ResponseEntity.status(404).build();
         }
-        return null;
+        return ResponseEntity.ok(adsAllDto);
     }
 
     @Operation(
@@ -102,16 +96,11 @@ public class AdsController {
     )
     @GetMapping("/me")
     public ResponseEntity<AdsMeDto> getAdsMe() {
-        if (true) {
-            return ResponseEntity.ok(adsService.getAllAdsMe());
-        } else if (false) {
-            return ResponseEntity.status(401).build();
-        } else if (false) {
-            return ResponseEntity.status(403).build();
-        } else if (false) {
+        AdsMeDto adsAllDtoMe = adsService.getAllAdsMe();
+        if (adsAllDtoMe == null) {
             return ResponseEntity.status(404).build();
         }
-        return null;
+        return ResponseEntity.ok(adsAllDtoMe);
     }
 
     @Operation(
@@ -181,14 +170,21 @@ public class AdsController {
     @GetMapping("/{adPk}/comments")
     public ResponseEntity<AdsCommentsDto> getAdsComments(@Parameter(description = "id объявления", example = "8")
                                                          @PathVariable Integer adPk) {
-        if (true) {
-            return ResponseEntity.ok(adsService.getAdsComments(adPk));
-        } else if (false) {
-            return ResponseEntity.status(401).build();
-        } else if (false) {
+//        if (true) {
+//            return ResponseEntity.ok(adsService.getAdsComments(adPk));
+//        } else if (false) {
+//            return ResponseEntity.status(401).build();
+//        } else if (false) {
+//            return ResponseEntity.status(403).build();
+//        }
+//        return null;
+
+
+        AdsCommentsDto getComments = adsService.getAdsComments(adPk);
+        if (getComments == null) {
             return ResponseEntity.status(403).build();
         }
-        return null;
+        return ResponseEntity.ok(getComments);
     }
 
 

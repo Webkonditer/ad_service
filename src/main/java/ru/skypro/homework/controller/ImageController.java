@@ -61,9 +61,11 @@ public class ImageController {
     @PatchMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<String> updateAdsImage(@Parameter(description = "id объявления", example = "8")
                                                  @PathVariable Integer id,
-                                                 @RequestParam MultipartFile multipartFile)
+                                                 @RequestParam(value = "image") MultipartFile image)
             throws IOException {
-        Boolean updateAdImageDone = imagesService.updateAdsImage(multipartFile, id);
+        System.out.println("id " + id + " " + image);
+
+        Boolean updateAdImageDone = imagesService.updateAdsImage(image, id);
         if (updateAdImageDone) {
             return ResponseEntity.ok().build();
         }

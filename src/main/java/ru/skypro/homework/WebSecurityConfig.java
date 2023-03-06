@@ -52,7 +52,6 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests((authz) ->
                         authz
                                 .mvcMatchers(AUTH_WHITELIST).permitAll()
-                                //.mvcMatchers("/ads/**", "/users/**").authenticated()
                                 .mvcMatchers("/ads/**", "/users/**").hasRole("USER")
                                 .mvcMatchers("/ads/**", "/users/**").hasRole("ADMIN")
 
