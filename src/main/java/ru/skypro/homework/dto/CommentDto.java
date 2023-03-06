@@ -18,7 +18,7 @@ public class CommentDto {
     private Integer id;
 
     /**
-     * Поле - время создания
+     * Поле - время создания комментария
      * */
     private String createdAt;
 

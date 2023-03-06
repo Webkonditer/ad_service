@@ -15,6 +15,9 @@ import java.util.Objects;
 
 import static java.nio.file.StandardOpenOption.CREATE_NEW;
 
+/**
+ * Сервис для работы с картинками для объявлений
+ */
 @Service
 @Slf4j
 public class ImagesService {
@@ -29,6 +32,11 @@ public class ImagesService {
         this.adsRepository = adsRepository;
     }
 
+    /**
+     * Метод для получения картинки
+     *
+     * @param imageId id картинки
+     */
     public Images getById(Integer imageId) {
         log.info("Was invoked method for get image by id");
         Images image = imagesRepository.findById(imageId).orElse(null);
@@ -39,6 +47,12 @@ public class ImagesService {
         return image;
     }
 
+
+    /**
+     * Метод для создания картинки для объявления
+     *
+     * @param multipartFile файл, содержащий картинку для объявления
+     */
     public Images create(MultipartFile multipartFile) {
         log.info("Was invoked method for create image");
         String fileName = /*path + */multipartFile.getOriginalFilename();
@@ -61,6 +75,7 @@ public class ImagesService {
         return imagesRepository.save(image);
     }
 
+    //    Метод не используется. Нужен?
     public void delete(Integer imageId) throws RuntimeException {
         log.info("Was invoked method for delete image by id");
         if (getById(imageId) != null) {
@@ -84,6 +99,8 @@ public class ImagesService {
 ////        }
 //    }
 
+
+    //    Метод не используется. Нужен?
     public Images getAdsImageById(Integer imageId) {
         log.info("Was invoked method for check ads image by id");
         Images image = imagesRepository.findById(imageId).orElse(null);
