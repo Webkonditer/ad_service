@@ -46,11 +46,20 @@ public class Users {
      */
     private String lastName;
 
+    /**
+     * Телефон
+     */
     private String phone;
 
+    /**
+     * Дата регистрации
+     */
     @JsonIgnore
     private Instant regDate;
 
+    /**
+     * Город
+     */
     private String city;
 
     /**
@@ -60,18 +69,19 @@ public class Users {
     @JoinColumn(name = "avatar_id")
     private Avatars avatar;
 
+    /**
+     * Объявления пользователя
+     */
     @OneToMany(mappedBy = "user")
     @JsonIgnore
     @ToString.Exclude
     private Collection<Ads> ads;
 
+    /**
+     * Комментарии пользователя
+     */
     @OneToMany(mappedBy = "user")
     @JsonIgnore
     private Collection<Comments> comments;
 
-//    @OneToMany(mappedBy = "user_id")
-//    @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
-//    @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
-//    @Enumerated(EnumType.STRING)
-//    private Set<Role> authorities;
 }

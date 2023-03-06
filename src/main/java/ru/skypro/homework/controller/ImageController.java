@@ -39,40 +39,6 @@ public class ImageController {
         this.adsRepository = adsRepository;
     }
 
-
-    @Operation(
-            summary = "Обновление картинки в объявлении по id объявления",
-            responses = {
-                    @ApiResponse(
-                            responseCode = "200",
-                            description = "Картинка у объявления обновлена, ссылка на нее сохранена в БД",
-                            content = @Content(
-                                    mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                    schema = @Schema(implementation = String.class))
-                    )
-            }, tags = "Images",
-            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
-                    content = @Content(
-                            mediaType = MediaType.MULTIPART_FORM_DATA_VALUE,
-                            schema = @Schema(implementation = MultipartFile.class))
-            )
-
-    )
-    @PatchMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<String> updateAdsImage(@Parameter(description = "id объявления", example = "8")
-                                                 @PathVariable Integer id,
-                                                 @RequestParam(value = "image") MultipartFile image)
-            throws IOException {
-        System.out.println("id " + id + " " + image);
-
-        Boolean updateAdImageDone = imagesService.updateAdsImage(image, id);
-        if (updateAdImageDone) {
-            return ResponseEntity.ok().build();
-        }
-        return ResponseEntity.status(404).build();
-    }
-
-
     @Operation(
             summary = "Получение картинки по id объявления для фронта",
             responses = {
@@ -104,5 +70,4 @@ public class ImageController {
             is.transferTo(os);
         }
     }
-
 }

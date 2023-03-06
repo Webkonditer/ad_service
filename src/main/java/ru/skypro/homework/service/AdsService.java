@@ -1,6 +1,9 @@
 package ru.skypro.homework.service;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.dto.CommentDto;
@@ -194,12 +197,6 @@ public class AdsService {
 
         imageService.updateAdsImage(image, ad.getPk());
 
-
-//        URL website = new URL("95.31.175.90/information.asp");
-//        ReadableByteChannel rbc = Channels.newChannel(website.openStream());
-//        FileOutputStream fos = new FileOutputStream("information.html");
-//        fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
-
         return adsMapper.toAdsDto(ad, ad.getUser(), ad.getImage());
     }
 
@@ -215,8 +212,8 @@ public class AdsService {
         Ads ad = adsRepository.findById(adPk).orElse(null);
         if (ad == null) {
             log.warn("Ad not found from id = " + adPk);
+            return null;
         }
-//        Optional<Ads> ad = adsRepository.findById(adPk);
         Comments comment = new Comments();
         comment.setUser(userService.getAuthorizedUser());
         comment.setCreatedAt(Instant.now());
@@ -224,11 +221,8 @@ public class AdsService {
         comment.setAd(adsRepository.findById(adPk).orElse(null));
         commentsRepository.save(comment);
 
-//        для чего?
-        assert ad != null;
         List<Comments> commentsList = ad.getComments();
         commentsList.add(comment);
-
 
         return adsMapper.toCommentDto(comment, comment.getUser());
     }
@@ -244,4 +238,32 @@ public class AdsService {
         adsRepository.delete(ad);
     }
 
+    /**
+     * Метод проверяет полномочия на внесение изиенений или удаление объявления
+     * @param id - ид объявления
+     */
+    public boolean checkGrantesForAds(Integer id) {
+        Ads ad = adsRepository.findAdsByPk(id);
+        if (ad == null) {
+            return false;
+        }
+        Users user = userService.getAuthorizedUser();
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        return user.getAds().contains(ad) ||
+                (auth != null && auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN")));
+    }
+
+    /**
+     * Метод проверяет полномочия на внесение изиенений или удаление комментария
+     * @param comment - сущность комментария
+     */
+    public boolean checkGrantesForComments(Comments comment) {
+
+        Users user = userService.getAuthorizedUser();
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        return user.getComments().stream().anyMatch(x -> x.getText().equals(comment.getText())) ||
+                (auth != null && auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN")));
+    }
 }

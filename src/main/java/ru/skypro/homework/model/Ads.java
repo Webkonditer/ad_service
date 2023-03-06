@@ -58,17 +58,12 @@ public class Ads {
     /**
      * Поле - время создания объявления
      */
-//    @JsonIgnore
     private Instant createdAt;
 
     /**
      * Поле - список комментариев/отзывов пользователя
      */
     @OneToMany(mappedBy = "ad", cascade = CascadeType.REMOVE)
-//    @JsonIgnore
     private List<Comments> comments;
-
-
-
 
 }

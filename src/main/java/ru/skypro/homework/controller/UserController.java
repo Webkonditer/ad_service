@@ -124,8 +124,6 @@ public class UserController {
         Users user = userService.updateUser(userDto);
         if (user == null) {
             return ResponseEntity.status(404).build();
-        } else if (false) {
-            return ResponseEntity.status(204).build();
         }
         return ResponseEntity.ok(UserMapper.INSTANCE.toDto(user));
     }
