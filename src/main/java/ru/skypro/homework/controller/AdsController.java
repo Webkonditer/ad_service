@@ -16,14 +16,12 @@ import ru.skypro.homework.dto.CommentDto;
 import ru.skypro.homework.dto.adsDto.*;
 import ru.skypro.homework.model.Ads;
 import ru.skypro.homework.model.Comments;
-import ru.skypro.homework.model.Users;
 import ru.skypro.homework.repository.AdsRepository;
 import ru.skypro.homework.repository.CommentsRepository;
 import ru.skypro.homework.service.AdsService;
 import ru.skypro.homework.service.ImagesService;
 import ru.skypro.homework.service.UserService;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 /**
@@ -136,8 +134,7 @@ public class AdsController {
     )
     @PatchMapping("/{id}")
     public ResponseEntity<AdsDto> updateAds(@Parameter(description = "id объявления", example = "8") @PathVariable Integer id,
-                                            @RequestBody AdsCreateDto adsCreateDto,
-                                            HttpServletRequest request) {
+                                            @RequestBody AdsCreateDto adsCreateDto) {
         if (!adsService.checkGrantesForAds(id)) {
             return ResponseEntity.status(403).build();
         }
