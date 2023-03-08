@@ -1,11 +1,9 @@
 package ru.skypro.homework.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
 import java.time.Instant;
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -60,17 +58,12 @@ public class Ads {
     /**
      * Поле - время создания объявления
      */
-//    @JsonIgnore
     private Instant createdAt;
 
     /**
      * Поле - список комментариев/отзывов пользователя
      */
-    @OneToMany(mappedBy = "ad")
-//    @JsonIgnore
+    @OneToMany(mappedBy = "ad", cascade = CascadeType.REMOVE)
     private List<Comments> comments;
-
-
-
 
 }

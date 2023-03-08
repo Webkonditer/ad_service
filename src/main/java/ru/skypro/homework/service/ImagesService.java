@@ -15,12 +15,13 @@ import java.util.Objects;
 
 import static java.nio.file.StandardOpenOption.CREATE_NEW;
 
+/**
+ * Сервис для работы с картинками для объявлений
+ */
 @Service
 @Slf4j
 public class ImagesService {
     private final AdsRepository adsRepository;
-    //    @Value("${images.location}")
-//    private String path;
     private final ImagesRepository imagesRepository;
 
     public ImagesService(ImagesRepository imagesRepository,
@@ -29,6 +30,11 @@ public class ImagesService {
         this.adsRepository = adsRepository;
     }
 
+    /**
+     * Метод для получения картинки
+     *
+     * @param imageId id картинки
+     */
     public Images getById(Integer imageId) {
         log.info("Was invoked method for get image by id");
         Images image = imagesRepository.findById(imageId).orElse(null);
@@ -39,59 +45,21 @@ public class ImagesService {
         return image;
     }
 
+
+    /**
+     * Метод для создания картинки для объявления
+     *
+     * @param multipartFile файл, содержащий картинку для объявления
+     */
     public Images create(MultipartFile multipartFile) {
         log.info("Was invoked method for create image");
         String fileName = /*path + */multipartFile.getOriginalFilename();
-//
-//        try {
-////            multipartFile.transferTo(new File(fileName));
-////            FileOutputStream out = new FileOutputStream(fileName);
-////            out.write(multipartFile.getBytes());
-////            out.close();
-//            Images image = new Images();
-//            image.setImage(fileName);
-//            return imagesRepository.save(image);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//            return null;
-//        }
 
         Images image = new Images();
         image.setImage(fileName);
         return imagesRepository.save(image);
     }
 
-    public void delete(Integer imageId) throws RuntimeException {
-        log.info("Was invoked method for delete image by id");
-        if (getById(imageId) != null) {
-            imagesRepository.deleteById(imageId);
-        } else {
-            throw new RuntimeException("Image not found");
-        }
-    }
-
-//    public Images update(Integer imageId, MultipartFile multipartFile) {
-//        log.info("Was invoked method for update image");
-//        return imagesRepository.update(imageId, multipartFile);
-////        try {
-////            FileOutputStream out = new FileOutputStream(getById(imageId).getImage());
-////            out.write(multipartFile.getBytes());
-////            out.close();
-////            return multipartFile.getBytes();
-////        } catch (IOException e) {
-////            e.printStackTrace();
-////            return null;
-////        }
-//    }
-
-    public Images getAdsImageById(Integer imageId) {
-        log.info("Was invoked method for check ads image by id");
-        Images image = imagesRepository.findById(imageId).orElse(null);
-        if (image == null || image.getAds() == null) {
-            log.error("There is not ads image with id = {}", imageId);
-        }
-        return image;
-    }
 
     /**
      * Метод обновляет картинку нового объявления
@@ -126,7 +94,6 @@ public class ImagesService {
             images.setAds(ads);
         }
 
-
         images.setImage(filePath.toString());
         images.setLinkForFront("/image/" + ads.getPk());
         images.setFileSize(image.getSize());
@@ -136,7 +103,6 @@ public class ImagesService {
         adsRepository.save(ads);
         return true;
     }
-
 
     /**
      * Метод возвращает расширение файла

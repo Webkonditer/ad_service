@@ -11,15 +11,12 @@ import ru.skypro.homework.model.Images;
 import ru.skypro.homework.model.Users;
 import ru.skypro.homework.repository.AdsRepository;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring", injectionStrategy = InjectionStrategy.CONSTRUCTOR)
 public interface AdsMapper {
+
+    @Mapping(source = "users.id", target = "id")
     CommentDto toCommentDto(Comments comments, Users users);
 
     @Mapping(source = "images.linkForFront", target = "image")

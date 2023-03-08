@@ -1,7 +1,6 @@
 package ru.skypro.homework.model;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -32,13 +31,17 @@ public class Comments {
     @Column(name="comment_text")
     private String text;
 
+    /**
+     * Поле - id пользователя
+     */
     @ManyToOne
-//    @JsonIgnore
     @JoinColumn(name = "user_id")
     private Users user;
 
+    /**
+     * Поле - id объявления
+     */
     @ManyToOne
-//    @JsonIgnore
     @JoinColumn(name = "ad_id")
     private Ads ad;
 

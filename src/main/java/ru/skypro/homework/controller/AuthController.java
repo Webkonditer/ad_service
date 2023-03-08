@@ -15,6 +15,9 @@ import ru.skypro.homework.service.AuthService;
 
 import static ru.skypro.homework.dto.Role.USER;
 
+/**
+ * Контроллер для работы с аутентификацией пользователей
+ */
 @Slf4j
 @CrossOrigin(value = "http://localhost:3000")
 @RestController
@@ -23,10 +26,13 @@ public class AuthController {
 
     private final AuthService authService;
 
+    /**
+     * Ендпоинт для аутентификации пользователя
+     * @param req
+     * @return
+     */
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginReq req) {
-        log.info("11111111111111" + req);
-//        System.out.println("11111111111111" + req);
         if (authService.login(req.getUsername(), req.getPassword())) {
             return ResponseEntity.ok().build();
         } else {
@@ -34,6 +40,11 @@ public class AuthController {
         }
     }
 
+    /**
+     * Ендпоинт для регистрации нового пользователя
+     * @param req
+     * @return
+     */
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody RegisterReq req) {
         Role role = req.getRole() == null ? USER : req.getRole();

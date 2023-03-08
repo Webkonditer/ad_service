@@ -16,6 +16,9 @@ public class AdsMeDto {
      * */
     private Integer author;
 
+    /**
+     * Поле - список всех объявлений
+     */
     @JsonProperty("results")
     private List<AdsDto> allResults;
 }

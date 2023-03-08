@@ -28,6 +28,12 @@ public class AuthServiceImpl implements AuthService {
         this.encoder = new BCryptPasswordEncoder();
     }
 
+    /**
+     * Метод для аутентификации пользователя
+     * @param userName
+     * @param password
+     * @return
+     */
     @Override
     public boolean login(String userName, String password) {
         if (!manager.userExists(userName)) {
@@ -39,6 +45,12 @@ public class AuthServiceImpl implements AuthService {
         return encoder.matches(password, encryptedPasswordWithoutEncryptionType);
     }
 
+    /**
+     * Метод для регистрации пользователя
+     * @param registerReq
+     * @param role
+     * @return
+     */
     @Override
     public boolean register(RegisterReq registerReq, Role role) {
         if (manager.userExists(registerReq.getUsername())) {

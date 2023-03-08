@@ -16,6 +16,9 @@ public class AdsAllDto {
      */
     private Integer count;
 
+    /**
+     * Поле - список всех объявлений
+     */
     @JsonProperty("results")
     private List<AdsDto> allResults;
 

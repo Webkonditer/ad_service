@@ -24,6 +24,10 @@ import java.time.Instant;
 
 import static java.nio.file.StandardOpenOption.CREATE_NEW;
 
+
+/**
+ * Сервис для работы с сущностями пользователей
+ */
 @Service
 @Slf4j
 public class UserService {
